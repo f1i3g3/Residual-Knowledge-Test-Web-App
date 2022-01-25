@@ -1,0 +1,51 @@
+﻿@page "/projects/{id:int}"
+@inject ResidualKnowledgeTestApp.Client.Services.ICheckingDisciplinesService ProjectsService
+@using ResidualKnowledgeTestApp.Client.Pages.FileUploadingComponents
+
+@if (!render)
+{
+    <span>Проект загружается...</span>
+}
+else
+{
+    <MudElement Style="font-size: xx-large">@ProjectsService.Project.Name</MudElement>
+    <br />
+    <MudElement Style="font-size: large">@ProjectsService.Project.Curriculum.ProgrammeCode @ProjectsService.Project.Curriculum.ProgrammeName</MudElement>
+    <br />
+    <ChoiceOfDisciplines DisciplinesForSelection="@disciplinesForSelection"
+                         SelectedDisciplines="@selectedDisciplines" />
+
+    <ChoiceOfCompetences CompetencesForSelection="ProjectsService.CompetencesForSelection"
+                         SelectedCompetences="ProjectsService.SelectedCompetences" />
+
+    @*<UserInfo />*@
+
+    <FileUploading CheckingDisciplines="ProjectsService.CheckingDisciplines" />
+}
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private HashSet<DisciplineDTO> disciplinesForSelection = new HashSet<DisciplineDTO>();
+    private HashSet<DisciplineDTO> selectedDisciplines = new HashSet<DisciplineDTO>();
+    private bool render = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProjectsService.OnChange += StateHasChanged;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await ProjectsService.LoadProject(Id);
+
+        disciplinesForSelection = ProjectsService.DisciplinesForSelection.ToHashSet();
+
+        var selectedDisciplinesIds = ProjectsService.CheckingDisciplines.Select(cd => cd.Discipline.Id);
+        selectedDisciplines = disciplinesForSelection.Where(d => selectedDisciplinesIds.Contains(d.Id)).ToHashSet();
+
+        render = true;
+    }
+}
