@@ -6,3 +6,6 @@
 *.csproj.user
 *.datasource
 *.settings
+user_files
+doc_patterns
+.idea
