@@ -4,7 +4,7 @@ using ContingentParser;
 namespace ResidualKnowledgeConsoleApp
 {
     // мб модель должна быть другой
-    class StudentAnswer
+    public class StudentAnswer
     {
         public StudentAnswer(Student student, CheckingDiscipline discipline, Dictionary<Question, int> scores)
         {

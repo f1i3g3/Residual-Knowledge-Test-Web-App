@@ -12,7 +12,7 @@ namespace ResidualKnowledgeConsoleApp
         static void Main(string[] args)
         {
             var curriculum = new DocxCurriculum(args[0]);
-            var contingent = new Contingent(args[1]); // Контингента нет !!!!!
+            var contingent = new Contingent(args[1]); // Контингента нет - исправить!!!!!
             var MsFormsAlgebra = args[2];
             var msFormsCompArchitecture = args[3];
             var QandAalg = args[4];
@@ -115,7 +115,7 @@ namespace ResidualKnowledgeConsoleApp
             });
 
             var spreadsheetGenerator = new GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
-            spreadsheetGenerator.Generate();
+            spreadsheetGenerator.Generate(); // Exception point
             return;
 
             var spreadsheet = new GoogleSpreadsheetParser.GoogleSpreadsheetParser(userChoice.CheckingDisciplines);

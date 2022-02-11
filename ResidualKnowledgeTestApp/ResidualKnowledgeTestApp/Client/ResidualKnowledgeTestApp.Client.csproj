@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ResidualKnowledgeConsoleApp\ResidualKnowledgeConsoleApp.csproj" />
     <ProjectReference Include="..\Shared\ResidualKnowledgeTestApp.Shared.csproj" />
   </ItemGroup>
 

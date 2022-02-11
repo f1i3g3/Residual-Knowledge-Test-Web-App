@@ -101,5 +101,17 @@ namespace ResidualKnowledgeTestApp.Server.Services
         {
             return await _checkingDisciplineRepository.GetMarkCriteria(checkingDisciplineId);
         }
+
+        public async Task<string> GetGeneratedSheet(int checkingDisciplineId) // здесь должны быть параметры?
+        {
+            List<ResidualKnowledgeConsoleApp.MarkCriterion> competenceCriterion = null;
+            ResidualKnowledgeConsoleApp.UserChoice userChoice = null;
+            List<string> groups = null;
+            List<ResidualKnowledgeConsoleApp.StudentAnswer> studentAnswers = null;
+            List<ResidualKnowledgeConsoleApp.MidCerificationAssesmentResult> midCertificationResult = null;
+
+            var spreadsheetGenerator = new ResidualKnowledgeConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
+            throw new System.NotImplementedException();
+        }
     }
 }

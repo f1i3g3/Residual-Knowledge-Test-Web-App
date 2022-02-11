@@ -42,6 +42,11 @@ else if (CheckingDisciplinesService.UserChoice.CompetencesShouldBeUpdated || edi
                          Color="Color.Primary"
                          StartIcon="@Icons.Material.Filled.Save"
                          OnClick="SaveSelectedCompetences">Сохранить</MudBlazor.MudButton>
+    <MudBlazor.MudButton Variant="Variant.Filled"
+                         Color="Color.Primary"
+                         StartIcon="@Icons.Material.Filled.Save"   @*поменять форму*@
+                         OnClick="GenerateSheet">Сгенерировать таблицу</MudBlazor.MudButton>
+                         
 }
 else
 {
@@ -101,6 +106,11 @@ else
     {
         await CheckingDisciplinesService.SetCheckingCompetences(SelectedCompetences);
         editing = false;
+    }
+
+    async Task GenerateSheet()
+    {
+        await CheckingDisciplinesService.GenerateSheet();
     }
 
     async Task ChangeSelectedCompetences()

@@ -49,6 +49,8 @@ namespace ResidualKnowledgeTestApp.Client.Services
 
         Task SetCheckingCompetences(IEnumerable<CompetenceWithDisciplineDTO> selectedCompetences);
 
+        Task GenerateSheet();
+
         Task UpdateCheckingDisciplineFiles(int id, CheckingDisciplineDetailsDTO updated);
 
         Task UploadFileAsync(HttpContent content);

@@ -101,5 +101,17 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             await _checkingDisciplinesService.GetMarkCriteria(checkingDisciplineId);
             return Ok();
         }
+
+        [HttpGet("criteria/{checkingDisciplineId}")]
+        public async Task<ActionResult> GetGeneratedSheet(int checkingDisciplineId) // TODO
+        {
+            var exists = await _checkingDisciplinesService.DoesCheckingDisciplineExist(checkingDisciplineId);
+            if (!exists)
+            {
+                return NotFound();
+            }
+            await _checkingDisciplinesService.GetGeneratedSheet(checkingDisciplineId);
+            return Ok();
+        }
     }
 }
