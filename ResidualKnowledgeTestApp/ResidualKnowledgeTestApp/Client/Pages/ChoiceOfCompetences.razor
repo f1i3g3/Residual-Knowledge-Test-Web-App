@@ -38,14 +38,16 @@ else if (CheckingDisciplinesService.UserChoice.CompetencesShouldBeUpdated || edi
         </GroupFooterTemplate>
     </MudTable>
     <br />
-    <MudBlazor.MudButton Variant="Variant.Filled"
+    <MudButtonGroup>
+        <MudBlazor.MudButton Variant="Variant.Filled"
                          Color="Color.Primary"
                          StartIcon="@Icons.Material.Filled.Save"
                          OnClick="SaveSelectedCompetences">Сохранить</MudBlazor.MudButton>
-    <MudBlazor.MudButton Variant="Variant.Filled"
+        <MudBlazor.MudButton Variant="Variant.Filled"
                          Color="Color.Primary"
-                         StartIcon="@Icons.Material.Filled.Save"   @*поменять форму*@
                          OnClick="GenerateSheet">Сгенерировать таблицу</MudBlazor.MudButton>
+                         @* группа кнопок ?? *@
+    </MudButtonGroup>
                          
 }
 else
