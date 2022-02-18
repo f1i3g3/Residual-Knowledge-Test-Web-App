@@ -4,7 +4,7 @@
 {
 }
 else if (CheckingDisciplinesService.UserChoice.CompetencesShouldBeUpdated || editing || 
-    !CheckingDisciplinesService.UserChoice.CompetencesSelected)
+    !CheckingDisciplinesService.UserChoice.CompetencesSelected) @**@
 {
     <MudTable Items="CompetencesForSelection"
               MultiSelection="true"
@@ -38,16 +38,11 @@ else if (CheckingDisciplinesService.UserChoice.CompetencesShouldBeUpdated || edi
         </GroupFooterTemplate>
     </MudTable>
     <br />
-    <MudButtonGroup>
-        <MudBlazor.MudButton Variant="Variant.Filled"
+    <MudButton Variant="Variant.Filled"
                          Color="Color.Primary"
                          StartIcon="@Icons.Material.Filled.Save"
-                         OnClick="SaveSelectedCompetences">Сохранить</MudBlazor.MudButton>
-        <MudBlazor.MudButton Variant="Variant.Filled"
-                         Color="Color.Primary"
-                         OnClick="GenerateSheet">Сгенерировать таблицу</MudBlazor.MudButton>
-                         @* группа кнопок ?? *@
-    </MudButtonGroup>
+                         OnClick="SaveSelectedCompetences">Сохранить</MudButton>
+ 
                          
 }
 else
@@ -59,7 +54,7 @@ else
               Dense="true"
               GroupFooterClass="mb-4">
         <ToolBarContent>
-            <MudText Typo="Typo.h6">Компетенции выбранные для проверки</MudText>
+            <MudText Typo="Typo.h6">Компетенции, выбранные для проверки</MudText>
             <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="ChangeSelectedCompetences" Class="ma-2" />
         </ToolBarContent>
         <ColGroup>

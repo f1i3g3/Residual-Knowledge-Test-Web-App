@@ -105,7 +105,7 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         [HttpGet("criteria/{checkingDisciplineId}")]
         public async Task<ActionResult> GetGeneratedSheet(int checkingDisciplineId) // TODO
         {
-            var exists = await _checkingDisciplinesService.DoesCheckingDisciplineExist(checkingDisciplineId);
+            var exists = await _checkingDisciplinesService.DoesCheckingDisciplineExist(checkingDisciplineId); // redo
             if (!exists)
             {
                 return NotFound();

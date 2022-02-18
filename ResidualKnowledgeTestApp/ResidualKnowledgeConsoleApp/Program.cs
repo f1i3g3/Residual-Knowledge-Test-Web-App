@@ -12,7 +12,7 @@ namespace ResidualKnowledgeConsoleApp
         static void Main(string[] args)
         {
             var curriculum = new DocxCurriculum(args[0]);
-            var contingent = new Contingent(args[1]); // Контингента нет - исправить!!!!!
+            var contingent = new Contingent(args[1]); // Контингента нет - исправить на будущее!!!!!
             var MsFormsAlgebra = args[2];
             var msFormsCompArchitecture = args[3];
             var QandAalg = args[4];
@@ -50,7 +50,7 @@ namespace ResidualKnowledgeConsoleApp
                 new MarkCriterion(6, 7, 'D', 3),
                 new MarkCriterion(5, 5, 'E', 3),
                 new MarkCriterion(0, 4, 'F', 2)
-            };
+            }; // 
 
             var user = new User("ФИО", "Автора", "Ответов");
             var config = new MsFormsParserConfiguration(4, 8, 3, user);

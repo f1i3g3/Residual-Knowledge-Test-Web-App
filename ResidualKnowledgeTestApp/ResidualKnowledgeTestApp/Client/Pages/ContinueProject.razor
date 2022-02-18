@@ -21,6 +21,12 @@ else
     @*<UserInfo />*@
 
     <FileUploading CheckingDisciplines="ProjectsService.CheckingDisciplines" />
+
+    <MudButton Variant="Variant.Filled" 
+                         Color="Color.Primary"
+                         OnClick="GenerateSheet">Сгенерировать ссылку на таблицу</MudButton>
+                         @* if file uploaded?? *@
+                         @* center allign *@
 }
 
 @code
@@ -47,5 +53,10 @@ else
         selectedDisciplines = disciplinesForSelection.Where(d => selectedDisciplinesIds.Contains(d.Id)).ToHashSet();
 
         render = true;
+    }
+
+    protected async Task GenerateSheet()
+    {
+        
     }
 }

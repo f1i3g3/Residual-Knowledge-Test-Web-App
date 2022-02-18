@@ -102,15 +102,16 @@ namespace ResidualKnowledgeTestApp.Server.Services
             return await _checkingDisciplineRepository.GetMarkCriteria(checkingDisciplineId);
         }
 
-        public async Task<string> GetGeneratedSheet(int checkingDisciplineId) // здесь должны быть параметры?
+        public async Task<string> GetGeneratedSheet(int checkingDisciplineId) // здесь должны быть параметры? userChoice ??
         {
-            List<ResidualKnowledgeConsoleApp.MarkCriterion> competenceCriterion = null;
-            ResidualKnowledgeConsoleApp.UserChoice userChoice = null;
-            List<string> groups = null;
-            List<ResidualKnowledgeConsoleApp.StudentAnswer> studentAnswers = null;
-            List<ResidualKnowledgeConsoleApp.MidCerificationAssesmentResult> midCertificationResult = null;
+            // checkingDisciplines?? где вообще данные хранятся?
+            //List<ResidualKnowledgeConsoleApp.MarkCriterion> competenceCriterion = _markCriterionRepository; // файл ??
+            //List<string> groups = null; // здесь нужен контингент, которого нет
+            //ResidualKnowledgeConsoleApp.UserChoice userChoice = new ResidualKnowledgeConsoleApp.UserChoice(user, groups, null, null); // контингент ??
+            //List<ResidualKnowledgeConsoleApp.StudentAnswer> studentAnswers = null;
+            //List<ResidualKnowledgeConsoleApp.MidCerificationAssesmentResult> midCertificationResult = MidCerificationResultsPath;
 
-            var spreadsheetGenerator = new ResidualKnowledgeConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
+            //var spreadsheetGenerator = new ResidualKnowledgeConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
             throw new System.NotImplementedException();
         }
     }

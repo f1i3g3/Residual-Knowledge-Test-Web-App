@@ -26,6 +26,7 @@ namespace ResidualKnowledgeTestApp.Shared
 
         public List<CheckingDiscipline> CheckingDisciplines { get; set; } = new List<CheckingDiscipline>();
 
-        //public User User { get; set; }
+        // public string GoogleReference { get; set; }
+        // public User User { get; set; }
     }
 }
