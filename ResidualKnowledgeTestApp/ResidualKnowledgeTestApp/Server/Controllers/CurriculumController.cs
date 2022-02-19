@@ -38,7 +38,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet] // фильтр потом
+        /// <summary>
+        /// Получение всех учебных планов
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet] // фильтр на пользователя сделать потом
         [ProducesResponseType(typeof(List<Curriculum/*ProjectInfoOverviewDTO*/>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCurriculums()
         {
@@ -46,6 +50,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(curriculums.ToList()); // (_mapper.Map<List<ProjectInfoOverviewDTO>>(projects));
         }
 
+        /// <summary>
+        /// Получение учебного плана по id
+        /// </summary>
+        /// <param name="id">Id учебного плана</param>
+        /// <returns></returns>
         [ProducesResponseType(typeof(Curriculum/*DetailedProjectInfoDTO*/), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
@@ -61,6 +70,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(curriculum);// (_mapper.Map<DetailedProjectInfoDTO>(project));
         }
 
+        /// <summary>
+        /// Получение всех дисциплин
+        /// </summary>
+        /// <param name="id">Id учебного плана</param>
+        /// <returns></returns>
         [HttpGet("disciplines/{id}")]
         [ProducesResponseType(typeof(List<DisciplineDTO>/*DetailedProjectInfoDTO*/), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -77,6 +91,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Создание учебного плана
+        /// </summary>
+        /// <param name="curriculumViewModel"></param>
+        /// <returns></returns>
         [ProducesResponseType(typeof(CurriculumDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [HttpPost]
@@ -118,6 +137,8 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         }
 
 
+        // Уточнить код ниже у Ульяны
+
         //var filteredCurriculums = await _curriculumService.GetFilteredCurriculums(c => c.Code == parsedCurriculum.CurriculumCode);
         //var exists = null != filteredCurriculums.FirstOrDefault();
         //if (exists)
@@ -140,7 +161,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         //discipline.Competences.AddRange(disciplineCompetences); 
         // возможно стоит сделать это с помощью _disciplinesService update
 
-
+        /// <summary>
+        /// Удаление учебного плана
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(Curriculum/*DetailedProjectInfoDTO*/), StatusCodes.Status200OK)]

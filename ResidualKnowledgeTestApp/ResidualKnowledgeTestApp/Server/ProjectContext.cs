@@ -3,6 +3,9 @@ using ResidualKnowledgeTestApp.Shared;
 
 namespace ResidualKnowledgeTestApp.Server
 {
+    /// <summary>
+    /// База данных
+    /// </summary>
     public class ProjectContext : DbContext
     {
         public ProjectContext(DbContextOptions<ProjectContext> options)
@@ -11,18 +14,39 @@ namespace ResidualKnowledgeTestApp.Server
             Database.EnsureCreated();
         }
 
-       // public DbSet<User> Users { get; set; }
+        /// <summary>
+        /// Список пользователей
+        /// </summary>
+        // public DbSet<User> Users { get; set; }
 
+        /// <summary>
+        /// Созданные проекты
+        /// </summary>
         public DbSet<Project> Projects { get; set; }
 
+        /// <summary>
+        /// Учебные планы
+        /// </summary>
         public DbSet<Curriculum> Curriculums { get; set; }
 
+        /// <summary>
+        /// Дисциплины
+        /// </summary>
         public DbSet<Discipline> Disciplines { get; set; }
 
+        /// <summary>
+        /// Компетенции
+        /// </summary>
         public DbSet<Competence> Competences { get; set; }
 
-        public DbSet<CheckingDiscipline> CheckingDisciplines { get; set; }
+        /// <summary>
+        /// Выбранные дисциплины
+        /// </summary>
+        public DbSet<CheckingDiscipline> CheckingDisciplines { get; set; } // В базе данных??
 
+        /// <summary>
+        /// Критерии оценивания
+        /// </summary>
         public DbSet<MarkCriterion> MarkCriteria { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

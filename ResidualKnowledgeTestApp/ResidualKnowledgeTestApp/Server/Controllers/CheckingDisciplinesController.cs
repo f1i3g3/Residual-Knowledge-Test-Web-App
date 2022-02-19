@@ -26,8 +26,13 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Добавление выбранной дисциплины
+        /// </summary>
+        /// <param name="disciplineVM"></param>
+        /// <returns></returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)] // ??
         [HttpPost]
         public async Task<IActionResult> CreateCheckingDiscipline([FromBody] CheckingDiscipline disciplineVM) // добавить id пользователя
         {
@@ -35,6 +40,12 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(checkingDisciplineId); //CreatedAtAction(nameof(CreateCurriculum), new { curriculumId = curriculumId }, curriculum);
         }
 
+        /// <summary>
+        /// Обновление выбранной дисциплины
+        /// </summary>
+        /// <param name="checkingDisciplineId"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
         [HttpPut("{checkingDisciplineId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]  // добавить ограничение доступа
@@ -50,6 +61,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Удаление выбора дисциплины
+        /// </summary>
+        /// <param name="checkingDisciplineId">Id дисциплины</param>
+        /// <returns></returns>
         [HttpDelete("{checkingDisciplineId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(List<CheckingDisciplineDetailsDTO>), StatusCodes.Status200OK)]
@@ -65,6 +81,12 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(await _checkingDisciplinesService.GetAllCheckingDisciplinesAsync());
         }
 
+        /// <summary>
+        /// Обновление компетенций выбранной дисциплины
+        /// </summary>
+        /// <param name="checkingDisciplineId"></param>
+        /// <param name="disciplineCompetences"></param>
+        /// <returns></returns>
         [HttpPut("competences/{checkingDisciplineId}")]
         public async Task<ActionResult> UpdateCheckingDisciplineCompetences(int checkingDisciplineId, [FromBody] List<CompetenceWithDisciplineDTO> disciplineCompetences)
         {
@@ -78,6 +100,12 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Выбор критериев оценивания
+        /// </summary>
+        /// <param name="checkingDisciplineId"></param>
+        /// <param name="markCriteria"></param>
+        /// <returns></returns>
         [HttpPut("criteria/{checkingDisciplineId}")]
         public async Task<ActionResult> SetMarkCriteria(int checkingDisciplineId, [FromBody] List<MarkCriterion> markCriteria)
         {
@@ -90,6 +118,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Получение критериев оценивания
+        /// </summary>
+        /// <param name="checkingDisciplineId"></param>
+        /// <returns></returns>
         [HttpGet("criteria/{checkingDisciplineId}")]
         public async Task<ActionResult> GetMarkCriteria(int checkingDisciplineId)
         {
@@ -102,8 +135,13 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Получение сгенерированной ссылки на гугл-документ
+        /// </summary>
+        /// <param name="checkingDisciplineId"></param>
+        /// <returns></returns>
         [HttpGet("criteria/{checkingDisciplineId}")]
-        public async Task<ActionResult> GetGeneratedSheet(int checkingDisciplineId) // TODO
+        public async Task<ActionResult> GetGeneratedSheet(int checkingDisciplineId) // TODO: перенести в проекты/отдельный контроллер!!
         {
             var exists = await _checkingDisciplinesService.DoesCheckingDisciplineExist(checkingDisciplineId); // redo
             if (!exists)

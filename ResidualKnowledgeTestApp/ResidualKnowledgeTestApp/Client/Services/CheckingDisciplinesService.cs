@@ -189,9 +189,10 @@ namespace ResidualKnowledgeTestApp.Client.Services
             await _httpClient.PutAsJsonAsync($"api/checkingdisciplines/criteria/{checkingDisciplineId}", markCriteria);
         }
 
-        public async Task GenerateSheet()
+        public async Task GenerateLink()
         {
-            var _ = (UserChoice, Curriculum, CheckingDisciplines, DisciplinesForSelection, SelectedCompetences); // how to do request on server???
+            var _ = (UserChoice, Curriculum, CheckingDisciplines, DisciplinesForSelection, SelectedCompetences); // do it on server
+            await _httpClient.GetStringAsync(""); // сверить код с Ульяниным!
             throw new NotImplementedException();
         }
     }

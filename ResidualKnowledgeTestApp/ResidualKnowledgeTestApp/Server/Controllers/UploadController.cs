@@ -20,6 +20,10 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             this.environment = environment;
         }
 
+        /// <summary>
+        /// Загрузка файла
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task Post()
         {

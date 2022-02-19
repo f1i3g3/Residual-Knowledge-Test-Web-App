@@ -33,6 +33,10 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Получение всех проектов
+        /// </summary>
+        /// <returns></returns>
         [HttpGet] // фильтр потом
         [ProducesResponseType(typeof(List<ProjectOverviewDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllProjects()
@@ -42,6 +46,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Получение проекта по id
+        /// </summary>
+        /// <param name="id">Id проекта</param>
+        /// <returns></returns>
         [ProducesResponseType(typeof(ProjectDetailsDTO), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
@@ -58,6 +67,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Создание проекта
+        /// </summary>
+        /// <param name="projectVM"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectVM projectVM) // добавить id пользователя
         {
@@ -68,6 +82,12 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Обновление данных проекта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="update"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]  // добавить ограничение доступа
@@ -83,6 +103,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Удаление проекта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(Project/*DetailedProjectInfoDTO*/), StatusCodes.Status200OK)]
@@ -98,6 +123,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(await _projectsService.GetAllProjectsAsync());
         }
 
+        /// <summary>
+        /// Получение выбранных дисциплин проекта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("disciplines/{id}")] // фильтр потом
         [ProducesResponseType(typeof(List<CheckingDisciplineDetailsDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProjectCheckingDiscipline(int id)
@@ -107,6 +137,12 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Выбор дисциплин проекта
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="disciplines"></param>
+        /// <returns></returns>
         [HttpPut("disciplines/set/{projectId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]  // добавить ограничение доступа
@@ -142,6 +178,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(mapped);
         }
 
+        /// <summary>
+        /// Получение выбранных компетенций проекта
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("competences/{id}")] // фильтр потом
         [ProducesResponseType(typeof(List<CompetenceWithDisciplineDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProjectCheckingCompetences(int id) // не вызывается
@@ -151,6 +192,12 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok(_mapper.Map<List<CompetenceWithDisciplineDTO>>(userSelections));
         }
 
+        /// <summary>
+        /// Выбор компетенций проекта
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <param name="selectedCompetences"></param>
+        /// <returns></returns>
         [HttpPut("competences/set/{projectId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]  // добавить ограничение доступа
@@ -176,6 +223,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Получение компетенций проекта для выборки
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("competences/selection/{id}")] // фильтр потом
         [ProducesResponseType(typeof(List<CompetenceWithDisciplineDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetProjectCompetencesForSelection(int id)
@@ -187,6 +239,11 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         }
         // await _projectsService.UpdateProjectAsync(curriculum.ProjectId, new { CurriculumId = curriculum.Id, Stage = Stage.DisciplinesChoosing });
 
+        /// <summary>
+        /// Выбор информации пользователя
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         [HttpPut("userinfo/set")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -113,6 +113,8 @@ namespace ResidualKnowledgeTestApp.Server.Services
 
             //var spreadsheetGenerator = new ResidualKnowledgeConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
             throw new System.NotImplementedException();
+            //await _checkingDisciplineRepository. //TODO: типы данных в БД??
+            //TODO: Figma + письма
         }
     }
 }
