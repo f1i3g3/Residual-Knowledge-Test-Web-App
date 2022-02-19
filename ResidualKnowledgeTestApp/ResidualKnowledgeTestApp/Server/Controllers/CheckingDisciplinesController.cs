@@ -15,7 +15,7 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CheckingDisciplinesController : ControllerBase
+    public class CheckingDisciplinesController : ControllerBase // protected class & methods??
     {
         private ICheckingDisciplinesService _checkingDisciplinesService;
         private IMapper _mapper;

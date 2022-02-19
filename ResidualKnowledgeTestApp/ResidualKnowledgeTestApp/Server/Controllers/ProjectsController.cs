@@ -284,5 +284,10 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         //    }
         //    return Ok(await _userService.GetProjectUserAsync(projectId));
         //}
+
+        public async Task<IActionResult> GetGeneratedLink(int id)
+        {
+            return Ok();
+        }
     }
 }
