@@ -6,90 +6,90 @@
 <MudText Typo="Typo.h4">Проекты</MudText>
 <br />
 <MudBlazor.MudButton Variant="Variant.Filled"
-                     Color="Color.Primary"
-                     StartIcon="@Icons.Material.Filled.Add"
-                     OnClick="CreateProject">Создать</MudBlazor.MudButton>
+					 Color="Color.Primary"
+					 StartIcon="@Icons.Material.Filled.Add"
+					 OnClick="CreateProject">Создать</MudBlazor.MudButton>
 <br />
 <br />
 @if (ProjectsService.Projects == null)
 {
-    <MudText Typo="Typo.h6">Проекты загружаются...</MudText>
+	<MudText Typo="Typo.h6">Проекты загружаются...</MudText>
 }
 else if (ProjectsService.Projects.Count != 0)
 {
-    <MudTable Items="@ProjectsService.Projects"
-              Hover="true"
-              Dense="true"
-              T="ProjectOverviewDTO"
-              OnRowClick="@RowClicked"
-              RowStyle="cursor: pointer">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6">Созданные проекты</MudText>
-        </ToolBarContent>
-        <HeaderContent>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.Name)">
-                    Название проекта
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.Stage.ToStringRepresentation())">
-                    Этап
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.ProgrammeCode)">
-                    Код программы
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.ProgrammeName)">
-                    Название программы
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.LevelOfEducation)">
-                    Уровень
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.Course)">
-                    Курс
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.CreationTime)">
-                    Время создания
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh>
-                <MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.LastEditionTime)"
-                                   InitialDirection="SortDirection.Descending">
-                    Время последнего изменения
-                </MudTableSortLabel>
-            </MudTh>
-            <MudTh />
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="Название проекта">
-                @context.Name
-            </MudTd>
-            <MudTd DataLabel="Этап">@context.Stage.ToStringRepresentation()</MudTd>
-            <MudTd DataLabel="Код программы">@context.ProgrammeCode</MudTd>
-            <MudTd DataLabel="Название программы">@context.ProgrammeName</MudTd>
-            <MudTd DataLabel="Уровень">@context.LevelOfEducation</MudTd>
-            <MudTd DataLabel="Курс">@context.Course</MudTd>
-            <MudTd DataLabel="Время создания">@context.CreationTime</MudTd>
-            <MudTd DataLabel="Время последнего изменения">@context.LastEditionTime</MudTd>
-            <MudTd DataLabel="">
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="(() => DeleteProject(context.Id))" Class="ma-2" />
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
+	<MudTable Items="@ProjectsService.Projects"
+			  Hover="true"
+			  Dense="true"
+			  T="ProjectOverviewDTO"
+			  OnRowClick="@RowClicked"
+			  RowStyle="cursor: pointer">
+		<ToolBarContent>
+			<MudText Typo="Typo.h6">Созданные проекты</MudText>
+		</ToolBarContent>
+		<HeaderContent>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.Name)">
+					Название проекта
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.Stage.ToStringRepresentation())">
+					Этап
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.ProgrammeCode)">
+					Код программы
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.ProgrammeName)">
+					Название программы
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.LevelOfEducation)">
+					Уровень
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.Course)">
+					Курс
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.CreationTime)">
+					Время создания
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh>
+				<MudTableSortLabel SortBy="new Func<ProjectOverviewDTO, object>(x => x.LastEditionTime)"
+								   InitialDirection="SortDirection.Descending">
+					Время последнего изменения
+				</MudTableSortLabel>
+			</MudTh>
+			<MudTh />
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Название проекта">
+				@context.Name
+			</MudTd>
+			<MudTd DataLabel="Этап">@context.Stage.ToStringRepresentation()</MudTd>
+			<MudTd DataLabel="Код программы">@context.ProgrammeCode</MudTd>
+			<MudTd DataLabel="Название программы">@context.ProgrammeName</MudTd>
+			<MudTd DataLabel="Уровень">@context.LevelOfEducation</MudTd>
+			<MudTd DataLabel="Курс">@context.Course</MudTd>
+			<MudTd DataLabel="Время создания">@context.CreationTime</MudTd>
+			<MudTd DataLabel="Время последнего изменения">@context.LastEditionTime</MudTd>
+			<MudTd DataLabel="">
+				<MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="(() => DeleteProject(context.Id))" Class="ma-2" />
+			</MudTd>
+		</RowTemplate>
+	</MudTable>
 }
 else
 {
-    <MudText Typo="Typo.h6">Пока проектов нет:)</MudText>
+	<MudText Typo="Typo.h6">Пока проектов нет:)</MudText>
 }
 
 <br />
@@ -97,31 +97,31 @@ else
 
 @code
 {
-    private ProjectOverviewDTO context = new ProjectOverviewDTO();
+	private ProjectOverviewDTO context = new ProjectOverviewDTO();
 
-    protected override async Task OnInitializedAsync()
-    {
-        ProjectsService.OnChange += StateHasChanged;
-        await ProjectsService.GetProjectsAsync();
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		ProjectsService.OnChange += StateHasChanged;
+		await ProjectsService.GetProjectsAsync();
+	}
 
-    public void RowClicked(TableRowClickEventArgs<ProjectOverviewDTO> p)
-    {
-        NavigationManager.NavigateTo($"projects/{p.Item.Id}");
-    }
+	public void RowClicked(TableRowClickEventArgs<ProjectOverviewDTO> p)
+	{
+		NavigationManager.NavigateTo($"projects/{p.Item.Id}");
+	}
 
-    void DeleteProject(int id)
-    {
-        ProjectsService.DeleteProject(id);
-    }
+	void DeleteProject(int id)
+	{
+		ProjectsService.DeleteProject(id);
+	}
 
-    void CreateProject()
-    {
-        NavigationManager.NavigateTo("create");
-    }
+	void CreateProject()
+	{
+		NavigationManager.NavigateTo("create");
+	}
 
-    public void Dispose()
-    {
-        ProjectsService.OnChange -= StateHasChanged;
-    }
+	public void Dispose()
+	{
+		ProjectsService.OnChange -= StateHasChanged;
+	}
 }

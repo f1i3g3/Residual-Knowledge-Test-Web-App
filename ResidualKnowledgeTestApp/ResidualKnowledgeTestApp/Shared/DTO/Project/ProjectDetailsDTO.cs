@@ -17,6 +17,8 @@ namespace ResidualKnowledgeTestApp.Shared.DTO
 
         public CurriculumDTO Curriculum { get; set; }
 
-        public List<CheckingDisciplineDetailsDTO> CheckingDisciplines { get; set; } 
+        public List<CheckingDisciplineDetailsDTO> CheckingDisciplines { get; set; }
+
+        public string SheetLink { get; set; }
     }
 }

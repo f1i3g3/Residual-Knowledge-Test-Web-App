@@ -12,5 +12,9 @@ namespace ResidualKnowledgeTestApp.Server.Repositories
         Task<Project> GetWithEverythingAsync(int projectId);
         
         Task<List<Project>> GetAllWithCurriculumAsync();
+
+        Task<string> GetSheetLink(int projectId);
+
+        Task UpdateSheetLink(int projectId, string link);
     }
 }

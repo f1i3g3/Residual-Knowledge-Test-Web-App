@@ -285,9 +285,25 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         //    return Ok(await _userService.GetProjectUserAsync(projectId));
         //}
 
+        [HttpGet("sheetlink/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetGeneratedLink(int id)
         {
-            return Ok();
+            var exists = await _projectsService.DoesProjectExist(id);
+            if (!exists)
+            {
+                return NotFound();
+            }
+
+            var link = await _projectsService.GetSheetLink(id);
+            if (link is null)
+			{
+                link = "";
+			}
+            
+
+            return Ok(link);
         }
     }
 }

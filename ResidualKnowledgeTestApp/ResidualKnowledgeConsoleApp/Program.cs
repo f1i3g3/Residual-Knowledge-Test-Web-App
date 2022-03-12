@@ -7,9 +7,9 @@ using ResidualKnowledgeConsoleApp.ResidualKnowledgeInputFilesParser;
 
 namespace ResidualKnowledgeConsoleApp
 {
-    partial class Program
+    partial class LinkGeneratorSample
     {
-        static void Main(string[] args)
+        static void Main(string[] args) // пример
         {
             var curriculum = new DocxCurriculum(args[0]);
             var contingent = new Contingent(args[1]); // Контингента нет - исправить на будущее!!!!!

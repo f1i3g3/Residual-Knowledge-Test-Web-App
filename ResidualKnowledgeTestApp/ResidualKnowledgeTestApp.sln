@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResidualKnowledgeTestApp.Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumParser", "CurriculumParser\CurriculumParser.csproj", "{2E346B8E-EAD3-45F7-8C7B-A9329302ED9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResidualKnowledgeConsoleApp", "ResidualKnowledgeConsoleApp\ResidualKnowledgeConsoleApp.csproj", "{A5C6CC0D-BE15-4EFE-B3B3-901F5FDB39EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResidualKnowledgeConsoleApp", "ResidualKnowledgeConsoleApp\ResidualKnowledgeConsoleApp.csproj", "{A5C6CC0D-BE15-4EFE-B3B3-901F5FDB39EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContingentParser", "ContingentParser\ContingentParser.csproj", "{25624C25-F434-4FF1-BAEF-5678A9458148}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContingentParser", "ContingentParser\ContingentParser.csproj", "{25624C25-F434-4FF1-BAEF-5678A9458148}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

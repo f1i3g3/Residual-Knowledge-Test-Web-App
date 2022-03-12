@@ -21,5 +21,7 @@ namespace ResidualKnowledgeTestApp.Shared.DTO
         public DateTime CreationTime { get; set; }
 
         public DateTime LastEditionTime { get; set; }
+
+        // public string GoogleSheetLink { get; set; }
     }
 }

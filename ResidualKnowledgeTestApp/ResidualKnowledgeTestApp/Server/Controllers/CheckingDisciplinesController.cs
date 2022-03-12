@@ -30,7 +30,7 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         /// Добавление выбранной дисциплины
         /// </summary>
         /// <param name="disciplineVM"></param>
-        /// <returns></returns>
+        /// <returns>Результат успешного выполнения запроса</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)] // ??
         [HttpPost]

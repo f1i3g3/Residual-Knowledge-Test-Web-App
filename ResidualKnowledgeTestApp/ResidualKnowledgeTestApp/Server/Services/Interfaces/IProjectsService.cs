@@ -20,5 +20,7 @@ namespace ResidualKnowledgeTestApp.Server.Services
 
         Task<List<CheckingDiscipline>> GetProjectCheckingDisciplinesAsync(int id);
         Task<List<DisciplineCompetence>> GetProjectCompetencesForSelection(int id);
+
+        Task<string> GetSheetLink(int projectId);
     }
 }

@@ -16,7 +16,7 @@ namespace CurriculumParser
         /// <summary>
         /// Программа
         /// </summary>
-        public Programme Programme { get; private set; }
+        public Programme Programme { get; private set; } // ProgrammeName ??
 
         /// <summary>
         /// Дисциплины
@@ -56,5 +56,9 @@ namespace CurriculumParser
             var disciplinesParser = new DocxDisciplinesParser(body, Competences, Programme, ElectiveBlocks);
             Disciplines = disciplinesParser.Parse();
         }
+
+
+        // Проблемы:
+        // LevelOfEducation ??
     }
 }

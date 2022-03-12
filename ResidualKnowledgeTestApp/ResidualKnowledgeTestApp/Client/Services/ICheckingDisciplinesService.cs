@@ -35,6 +35,8 @@ namespace ResidualKnowledgeTestApp.Client.Services
 
         HashSet<CompetenceWithDisciplineDTO> SelectedCompetences { get; }
 
+        string SheetLink { get; }
+
         Task SaveMarkCriteria(int checkingDisciplineId, List<MarkCriterion> markCriteria);
 
         Task<ProjectDetailsDTO> CreateProject(CreateProjectVM project);
@@ -55,6 +57,6 @@ namespace ResidualKnowledgeTestApp.Client.Services
 
         Task GetCheckingDisciplines();
 
-        Task GenerateLink();
+        Task GetSheetLink(int projectId);
     }
 }
