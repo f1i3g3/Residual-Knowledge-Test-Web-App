@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Residual-Knowledge-Test-Console-App\ResidualKnowledgeTestApp\ContingentParser\ContingentParser.csproj" />
+    <ProjectReference Include="..\..\Residual-Knowledge-Test-Console-App\ResidualKnowledgeTestApp\curriculum-parser\CurriculumParser\CurriculumParser.csproj" />
+    <ProjectReference Include="..\..\Residual-Knowledge-Test-Console-App\ResidualKnowledgeTestApp\ResidualKnowledgeTestApp\ResidualKnowledgeTestApp.csproj" />
     <ProjectReference Include="..\Client\ResidualKnowledgeTestApp.Client.csproj" />
     <ProjectReference Include="..\Shared\ResidualKnowledgeTestApp.Shared.csproj" />
   </ItemGroup>

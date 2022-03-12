@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResidualKnowledgeTestApp.Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResidualKnowledgeTestApp", "Residual-Knowledge-Test-Console-App\ResidualKnowledgeTestApp\ResidualKnowledgeTestApp\ResidualKnowledgeTestApp.csproj", "{75B4F90C-08DF-4EEF-A447-52DAD1737CE7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContingentParser", "Residual-Knowledge-Test-Console-App\ResidualKnowledgeTestApp\ContingentParser\ContingentParser.csproj", "{8386F0B5-B886-4BCA-BBF4-AD2737672D4C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurriculumParser", "Residual-Knowledge-Test-Console-App\ResidualKnowledgeTestApp\curriculum-parser\CurriculumParser\CurriculumParser.csproj", "{33695F70-594B-4AF8-B5DE-1B3560DB188F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{75B4F90C-08DF-4EEF-A447-52DAD1737CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75B4F90C-08DF-4EEF-A447-52DAD1737CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75B4F90C-08DF-4EEF-A447-52DAD1737CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8386F0B5-B886-4BCA-BBF4-AD2737672D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8386F0B5-B886-4BCA-BBF4-AD2737672D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8386F0B5-B886-4BCA-BBF4-AD2737672D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8386F0B5-B886-4BCA-BBF4-AD2737672D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33695F70-594B-4AF8-B5DE-1B3560DB188F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33695F70-594B-4AF8-B5DE-1B3560DB188F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33695F70-594B-4AF8-B5DE-1B3560DB188F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33695F70-594B-4AF8-B5DE-1B3560DB188F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
