@@ -13,8 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CurriculumParser\CurriculumParser.csproj" />
-    <ProjectReference Include="..\..\ResidualKnowledgeConsoleApp\ResidualKnowledgeConsoleApp.csproj" />
     <ProjectReference Include="..\Client\ResidualKnowledgeTestApp.Client.csproj" />
     <ProjectReference Include="..\Shared\ResidualKnowledgeTestApp.Shared.csproj" />
   </ItemGroup>
