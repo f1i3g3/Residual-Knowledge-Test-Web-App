@@ -93,6 +93,7 @@ namespace ResidualKnowledgeTestApp.Server.Services
 		private async Task<string> GenerateLink(int projectId)
 		{
 			string link = null;
+			/*
 			try
 			{
 				string path = AppDomain.CurrentDomain.BaseDirectory;
@@ -126,13 +127,13 @@ namespace ResidualKnowledgeTestApp.Server.Services
 					var curriculumDiscpImpl = curriculumDiscp.Implementations;
 					foreach (var i in curriculumDiscpImpl)
                     {
-						/*
+						//
 						var iComp = i.Competences;
 						foreach(var c in iComp)
                         {
 							c.SingleOrDefault(x => x.Code == d.CheckingCompetences.Code);
                         }
-						*/
+						//
                     }
 
 					foreach (var c in d.CheckingCompetences)
@@ -160,7 +161,7 @@ namespace ResidualKnowledgeTestApp.Server.Services
 				new ResidualKnowledgeConsoleApp.MarkCriterion(0, 49, 'F', 2)
 				 }; // это на серевер надо настроить же?
 
-				/*
+				//
 				var midCertificationResult = new List<ResidualKnowledgeConsoleApp.MidCerificationAssesmentResult>();
 				var studentAnswers = new List<ResidualKnowledgeConsoleApp.StudentAnswer>();
 				foreach (var d in consoleAppDisciplines)
@@ -178,7 +179,7 @@ namespace ResidualKnowledgeTestApp.Server.Services
 				spreadsheetGenerator.Generate(); // exception point
 
 				// link = ResidualKnowledgeConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
-				*/
+				//
 
 				await _projectsRepository.UpdateSheetLink(projectId, link);
 
@@ -189,6 +190,7 @@ namespace ResidualKnowledgeTestApp.Server.Services
 			{
 				link = null;
 			}
+			*/
 
 			return link;
 		}
