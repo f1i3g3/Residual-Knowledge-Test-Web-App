@@ -1,6 +1,1 @@
-[submodule "ResidualKnowledgeTestApp/Residual-Knowledge-Test-Console-App"]
-	path = ResidualKnowledgeTestApp/Residual-Knowledge-Test-Console-App
-	url = https://github.com/f1i3g3/Residual-Knowledge-Test-Console-App.git
-[submodule "ResidualKnowledgeTestApp/curriculum-parser"]
-	path = ResidualKnowledgeTestApp/curriculum-parser
-	url = https://github.com/resueman/curriculum-parser.git
+
