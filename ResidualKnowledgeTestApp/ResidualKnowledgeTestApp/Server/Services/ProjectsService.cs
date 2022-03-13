@@ -93,7 +93,7 @@ namespace ResidualKnowledgeTestApp.Server.Services
 		private async Task<string> GenerateLink(int projectId)
 		{
 			string link = null;
-			/*
+			
 			try
 			{
 				string path = AppDomain.CurrentDomain.BaseDirectory;
@@ -108,11 +108,11 @@ namespace ResidualKnowledgeTestApp.Server.Services
 					.Distinct()
 					.ToList();
 
-				var user = new ResidualKnowledgeConsoleApp.User("Кузнецов", "Дмитрий", "Владимирович"); // здесь должен быть автор ответов - по идее, нужна авторизация/вносить самому
-				var config = new ResidualKnowledgeConsoleApp.MsFormsParserConfiguration(4, 8, 3, user); // взял, как в примере
+				var user = new ConsoleApp.User("Кузнецов", "Дмитрий", "Владимирович"); // здесь должен быть автор ответов - по идее, нужна авторизация/вносить самому
+				var config = new ConsoleApp.MsFormsParserConfiguration(4, 8, 3, user); // взял, как в примере
 
 				var checkingDisciplines = await GetProjectCheckingDisciplinesAsync(projectId);
-				var consoleAppDisciplines = new List<ResidualKnowledgeConsoleApp.CheckingDiscipline>();
+				var consoleAppDisciplines = new List<ConsoleApp.CheckingDiscipline>();
 
 				foreach (var d in checkingDisciplines)
 				{
@@ -129,10 +129,13 @@ namespace ResidualKnowledgeTestApp.Server.Services
                     {
 						//
 						var iComp = i.Competences;
+
+						/*
 						foreach(var c in iComp)
                         {
 							c.SingleOrDefault(x => x.Code == d.CheckingCompetences.Code);
                         }
+						*/
 						//
                     }
 
@@ -142,40 +145,40 @@ namespace ResidualKnowledgeTestApp.Server.Services
 						consoleCheckCompet.Add(consoleCC);
 					}
 
-					var listOfMarks = new List<ResidualKnowledgeConsoleApp.MarkCriterion>(); // откуда?
+					var listOfMarks = new List<ConsoleApp.MarkCriterion>(); // откуда?
 
-					var consoleDiscp = new ResidualKnowledgeConsoleApp.CheckingDiscipline(curriculumDiscp, consoleCheckCompet, user, scale: listOfMarks,
+					var consoleDiscp = new ConsoleApp.CheckingDiscipline(curriculumDiscp, consoleCheckCompet, user, scale: listOfMarks,
 						config: config); // тестируется
 
 					consoleAppDisciplines.Add(consoleDiscp);
 				}
 
-				var userChoice = new ResidualKnowledgeConsoleApp.UserChoice(user, curriculum, contingent, consoleAppDisciplines);
-				var competenceCriterion = new List<ResidualKnowledgeConsoleApp.MarkCriterion>
+				var userChoice = new ConsoleApp.UserChoice(user, curriculum, contingent, consoleAppDisciplines);
+				var competenceCriterion = new List<ConsoleApp.MarkCriterion>
 				{
-				new ResidualKnowledgeConsoleApp.MarkCriterion(90, 100, 'A', 5),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(80, 89, 'B', 4),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(70, 79, 'C', 4),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(60, 69, 'D', 3),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(50, 59, 'E', 3),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(0, 49, 'F', 2)
+				new ConsoleApp.MarkCriterion(90, 100, 'A', 5),
+				new ConsoleApp.MarkCriterion(80, 89, 'B', 4),
+				new ConsoleApp.MarkCriterion(70, 79, 'C', 4),
+				new ConsoleApp.MarkCriterion(60, 69, 'D', 3),
+				new ConsoleApp.MarkCriterion(50, 59, 'E', 3),
+				new ConsoleApp.MarkCriterion(0, 49, 'F', 2)
 				 }; // это на серевер надо настроить же?
 
 				//
-				var midCertificationResult = new List<ResidualKnowledgeConsoleApp.MidCerificationAssesmentResult>();
-				var studentAnswers = new List<ResidualKnowledgeConsoleApp.StudentAnswer>();
+				var midCertificationResult = new List<ConsoleApp.MidCerificationAssesmentResult>();
+				var studentAnswers = new List<ConsoleApp.StudentAnswer>();
 				foreach (var d in consoleAppDisciplines)
 				{
-					var parser = new ResidualKnowledgeConsoleApp.ResidualKnowledgeInputFilesParser.ResidualKnowledgeDataParser(d, userChoice.Students);
+					var parser = new ConsoleApp.InputFilesParser.ResidualKnowledgeDataParser(d, userChoice.Students);
 					var result = parser.Parse();
 					midCertificationResult.AddRange(result.MidCerificationResults);
 					studentAnswers.AddRange(result.StudentAnswers);
 					d.Questions.AddRange(result.Questions);
 				}
 
-				link = ResidualKnowledgeConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
+				link = ConsoleApp.Generator.Generate(/*curriculum, contingent, consoleAppDisciplines*/);
 
-				var spreadsheetGenerator = new ResidualKnowledgeConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
+				var spreadsheetGenerator = new ConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
 				spreadsheetGenerator.Generate(); // exception point
 
 				// link = ResidualKnowledgeConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
@@ -190,8 +193,8 @@ namespace ResidualKnowledgeTestApp.Server.Services
 			{
 				link = null;
 			}
-			*/
 
+			link = "Pong under progress...";
 			return link;
 		}
 	}

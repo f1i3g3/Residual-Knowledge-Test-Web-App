@@ -4,74 +4,83 @@
 
 @if (!render)
 {
-    <span>Проект загружается...</span>
+	<span>Проект загружается...</span>
 }
 else
 {
-    <MudElement Style="font-size: xx-large">@ProjectsService.Project.Name</MudElement>
-    <br />
-    <MudElement Style="font-size: large">@ProjectsService.Project.Curriculum.ProgrammeCode @ProjectsService.Project.Curriculum.ProgrammeName</MudElement>
-    <br />
-    <ChoiceOfDisciplines DisciplinesForSelection="@disciplinesForSelection"
-                         SelectedDisciplines="@selectedDisciplines" />
+	<MudElement Style="font-size: xx-large">@ProjectsService.Project.Name</MudElement>
+	<br />
+	<MudElement Style="font-size: large">@ProjectsService.Project.Curriculum.ProgrammeCode @ProjectsService.Project.Curriculum.ProgrammeName</MudElement>
+	<br />
+	<ChoiceOfDisciplines DisciplinesForSelection="@disciplinesForSelection"
+						 SelectedDisciplines="@selectedDisciplines" />
 
-    <ChoiceOfCompetences CompetencesForSelection="ProjectsService.CompetencesForSelection"
-                         SelectedCompetences="ProjectsService.SelectedCompetences" />
+	<ChoiceOfCompetences CompetencesForSelection="ProjectsService.CompetencesForSelection"
+						 SelectedCompetences="ProjectsService.SelectedCompetences" />
 
-    @*<UserInfo />*@
+	@*<UserInfo />*@
 
-    <FileUploading CheckingDisciplines="ProjectsService.CheckingDisciplines" />
+	<FileUploading CheckingDisciplines="ProjectsService.CheckingDisciplines" />
 
-    <MudLink Href="@sheetLink">@sheetLinkCaption</MudLink>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SetSheetLink">Сгенерировать ссылку на таблицу</MudButton>
-    @* center allign *@
-    @* слетела кодировка *@
+	<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SetSheetLink">Сгенерировать ссылку на таблицу</MudButton>
 
-    
+	<MudLink Href=@sheetLink>@sheetLinkCaption</MudLink>
+
+	@* center allign *@
+	@* слетела кодировка *@
+
+	
 }
 
-    
+	
 @code
 {
-    [Parameter]
-    public int Id { get; set; }
+	[Parameter]
+	public int Id { get; set; }
 
-    private HashSet<DisciplineDTO> disciplinesForSelection = new HashSet<DisciplineDTO>();
-    private HashSet<DisciplineDTO> selectedDisciplines = new HashSet<DisciplineDTO>();
-    private bool render = false;
-    private string sheetLink = "";
-    private string sheetLinkCaption = "";
+	private HashSet<DisciplineDTO> disciplinesForSelection = new HashSet<DisciplineDTO>();
+	private HashSet<DisciplineDTO> selectedDisciplines = new HashSet<DisciplineDTO>();
+	private bool render = false;
+	private string sheetLink = "";
+	private string sheetLinkCaption = "";
 
-    protected override async Task OnInitializedAsync()
-    {
-        ProjectsService.OnChange += StateHasChanged;
-    }
+	protected override async Task OnInitializedAsync()
+	{
+		ProjectsService.OnChange += StateHasChanged;
+	}
 
-    protected override async Task OnParametersSetAsync()
-    {
-        await ProjectsService.LoadProject(Id);
+	protected override async Task OnParametersSetAsync()
+	{
+		await ProjectsService.LoadProject(Id);
 
-        disciplinesForSelection = ProjectsService.DisciplinesForSelection.ToHashSet();
+		disciplinesForSelection = ProjectsService.DisciplinesForSelection.ToHashSet();
 
-        var selectedDisciplinesIds = ProjectsService.CheckingDisciplines.Select(cd => cd.Discipline.Id);
-        selectedDisciplines = disciplinesForSelection.Where(d => selectedDisciplinesIds.Contains(d.Id)).ToHashSet();
+		var selectedDisciplinesIds = ProjectsService.CheckingDisciplines.Select(cd => cd.Discipline.Id);
+		selectedDisciplines = disciplinesForSelection.Where(d => selectedDisciplinesIds.Contains(d.Id)).ToHashSet();
 
-        await SetSheetLink();
-        sheetLink = ProjectsService.SheetLink; // check?
-        if (sheetLink is null)
-        {
-            sheetLinkCaption = "ссылки нет!";
-        }
-        else
-        {
-            sheetLinkCaption = "какая-то ссылка";
-        }
+		/*
+		await SetSheetLink();
+		sheetLink = ProjectsService.SheetLink; // check?
+			if (sheetLink is null)
+			{
+			sheetLinkCaption = "ссылки нет!";
+			}
+			else
+			{
+			sheetLinkCaption = "какая-то ссылка";
+		}
+		*/
 
-        render = true;
-    }
+		render = true;
+	}
 
-    private async Task SetSheetLink()
-    {
-        await ProjectsService.GetSheetLink(Id);
-    }
+	private async Task SetSheetLink()
+	{
+		await ProjectsService.GetSheetLink(Id);
+
+		sheetLink = ProjectsService.SheetLink;
+		sheetLinkCaption = "Ping?";
+		
+		StateHasChanged();
+	}
 }

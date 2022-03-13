@@ -196,13 +196,12 @@ namespace ResidualKnowledgeTestApp.Client.Services
 
 		public async Task GetSheetLink(int projectId)
 		{
-			var link = await _httpClient.GetStringAsync($"api/sheetlink/{projectId}");
+			var link = await _httpClient.GetStringAsync($"api/projects/{projectId}/sheetlink");
 
 			if (link is not null)
 			{
 				SheetLink = link; 
 			}
-			
 		}
 	}
 }
