@@ -22,9 +22,13 @@ else
 
 	<FileUploading CheckingDisciplines="ProjectsService.CheckingDisciplines" />
 
-	<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SetSheetLink">Сгенерировать ссылку на таблицу</MudButton>
+	@*<FileUploading>Загрузить файл контингента</FileUploading>*@
 
-	<MudLink Href=@sheetLink>@sheetLinkCaption</MudLink>
+
+	@* TODO: загрузка + инструктаж - в виде отдельного блока? *@
+
+	<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SetSheetLink">Сгенерировать ссылку на таблицу</MudButton>
+	<MudLink Href=@sheetLink>@sheetLink</MudLink>
 
 	@* center allign *@
 	@* слетела кодировка *@
@@ -42,7 +46,6 @@ else
 	private HashSet<DisciplineDTO> selectedDisciplines = new HashSet<DisciplineDTO>();
 	private bool render = false;
 	private string sheetLink = "";
-	private string sheetLinkCaption = "";
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -58,18 +61,7 @@ else
 		var selectedDisciplinesIds = ProjectsService.CheckingDisciplines.Select(cd => cd.Discipline.Id);
 		selectedDisciplines = disciplinesForSelection.Where(d => selectedDisciplinesIds.Contains(d.Id)).ToHashSet();
 
-		/*
 		await SetSheetLink();
-		sheetLink = ProjectsService.SheetLink; // check?
-			if (sheetLink is null)
-			{
-			sheetLinkCaption = "ссылки нет!";
-			}
-			else
-			{
-			sheetLinkCaption = "какая-то ссылка";
-		}
-		*/
 
 		render = true;
 	}
@@ -77,9 +69,7 @@ else
 	private async Task SetSheetLink()
 	{
 		await ProjectsService.GetSheetLink(Id);
-
 		sheetLink = ProjectsService.SheetLink;
-		sheetLinkCaption = "Ping?";
 		
 		StateHasChanged();
 	}

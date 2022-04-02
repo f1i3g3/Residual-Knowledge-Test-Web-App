@@ -80,7 +80,7 @@ namespace ResidualKnowledgeTestApp.Client.Services
 				UserChoice.FilesShouldBeUpdated = true;
 			}
 
-			SheetLink = Project.SheetLink;
+			SheetLink = Project.SheetLink is null ? "" : Project.SheetLink;
 
 			OnChange.Invoke();
 		}
@@ -201,6 +201,11 @@ namespace ResidualKnowledgeTestApp.Client.Services
 			if (link is not null)
 			{
 				SheetLink = link; 
+			}
+			else
+			{
+				SheetLink = "";
+				throw new Exception();
 			}
 		}
 	}

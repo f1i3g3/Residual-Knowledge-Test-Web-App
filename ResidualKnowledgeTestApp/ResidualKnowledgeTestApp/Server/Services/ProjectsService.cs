@@ -96,20 +96,16 @@ namespace ResidualKnowledgeTestApp.Server.Services
 			
 			try
 			{
-				string path = AppDomain.CurrentDomain.BaseDirectory;
+				string path = AppDomain.CurrentDomain.BaseDirectory; // структура? перименование файлов/вписать в инструкцию? очистка ненужных?
 
 				DocxCurriculum curriculum = new DocxCurriculum(path + ""); // файл берется с сервера, нужна структура файлов
-
-				//var contingent = await _projectsRepository.GetWithEverythingAsync(); // файл загружается через отдельный контроллер
-				Contingent contingent = new Contingent(path + "списки студентов мат обес.xls"); // файл берется с сервера, нужна структура файлов
+				Contingent contingent = new Contingent(path + "");  // файл загружается с сервера
+																	// через отдельный контроллер, нужна структура файлов
 				var groups = contingent
 					.Where(s => s.CurriculumCode == curriculum.CurriculumCode.Replace("/", "\\"))
 					.Select(s => s.GroupInContingent)
 					.Distinct()
 					.ToList();
-
-				var user = new ConsoleApp.User("Кузнецов", "Дмитрий", "Владимирович"); // здесь должен быть автор ответов - по идее, нужна авторизация/вносить самому
-				var config = new ConsoleApp.MsFormsParserConfiguration(4, 8, 3, user); // взял, как в примере
 
 				var checkingDisciplines = await GetProjectCheckingDisciplinesAsync(projectId);
 				var consoleAppDisciplines = new List<ConsoleApp.CheckingDiscipline>();
@@ -145,45 +141,14 @@ namespace ResidualKnowledgeTestApp.Server.Services
 						consoleCheckCompet.Add(consoleCC);
 					}
 
-					var listOfMarks = new List<ConsoleApp.MarkCriterion>(); // откуда?
+					// сопоставление компетенций с сервера и файла
+					var listOfMarks = new List<ConsoleApp.MarkCriterion>(); // с сервера
 
-					var consoleDiscp = new ConsoleApp.CheckingDiscipline(curriculumDiscp, consoleCheckCompet, user, scale: listOfMarks,
-						config: config); // тестируется
-
+					var consoleDiscp = new ConsoleApp.CheckingDiscipline(curriculumDiscp, consoleCheckCompet, null, scale: listOfMarks);
 					consoleAppDisciplines.Add(consoleDiscp);
 				}
 
-				var userChoice = new ConsoleApp.UserChoice(user, curriculum, contingent, consoleAppDisciplines);
-				var competenceCriterion = new List<ConsoleApp.MarkCriterion>
-				{
-				new ConsoleApp.MarkCriterion(90, 100, 'A', 5),
-				new ConsoleApp.MarkCriterion(80, 89, 'B', 4),
-				new ConsoleApp.MarkCriterion(70, 79, 'C', 4),
-				new ConsoleApp.MarkCriterion(60, 69, 'D', 3),
-				new ConsoleApp.MarkCriterion(50, 59, 'E', 3),
-				new ConsoleApp.MarkCriterion(0, 49, 'F', 2)
-				 }; // это на серевер надо настроить же?
-
-				//
-				var midCertificationResult = new List<ConsoleApp.MidCerificationAssesmentResult>();
-				var studentAnswers = new List<ConsoleApp.StudentAnswer>();
-				foreach (var d in consoleAppDisciplines)
-				{
-					var parser = new ConsoleApp.InputFilesParser.ResidualKnowledgeDataParser(d, userChoice.Students);
-					var result = parser.Parse();
-					midCertificationResult.AddRange(result.MidCerificationResults);
-					studentAnswers.AddRange(result.StudentAnswers);
-					d.Questions.AddRange(result.Questions);
-				}
-
-				link = ConsoleApp.Generator.Generate(/*curriculum, contingent, consoleAppDisciplines*/);
-
-				var spreadsheetGenerator = new ConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
-				spreadsheetGenerator.Generate(); // exception point
-
-				// link = ResidualKnowledgeConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
-				//
-
+				link = "https://docs.google.com/spreadsheets/d/" + ConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
 				await _projectsRepository.UpdateSheetLink(projectId, link);
 
 				// обновление ссылки
@@ -194,7 +159,6 @@ namespace ResidualKnowledgeTestApp.Server.Services
 				link = null;
 			}
 
-			link = "Pong under progress...";
 			return link;
 		}
 	}
