@@ -1,10 +1,12 @@
 ﻿using ContingentParser;
 using CurriculumParser;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ResidualKnowledgeTestApp.Server.Repositories;
 using ResidualKnowledgeTestApp.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,12 +17,14 @@ namespace ResidualKnowledgeTestApp.Server.Services
 		//private readonly IMapper _mapper;
 		private readonly IProjectsRepository _projectsRepository;
 		private readonly ICheckingDisciplinesService _checkingDisciplinesService;
+		private readonly IWebHostEnvironment _environment;
 
 		public ProjectsService(IProjectsRepository projectsRepository,
-			ICheckingDisciplinesService checkingDisciplinesService)
+			ICheckingDisciplinesService checkingDisciplinesService, IWebHostEnvironment environment)
 		{
 			_projectsRepository = projectsRepository;
 			_checkingDisciplinesService = checkingDisciplinesService;
+			_environment = environment;
 		}
 
 		public async Task<Project> CreateProjectAsync(Project project) // createProjectVM
@@ -96,10 +100,13 @@ namespace ResidualKnowledgeTestApp.Server.Services
 			
 			try
 			{
-				string path = AppDomain.CurrentDomain.BaseDirectory; // структура? перименование файлов/вписать в инструкцию? очистка ненужных?
+				string filesPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../Files/"; // redo with projectID
+				// Path.Combine(_environment.ContentRootPath, "Files", $"Project_{projectId}_Files");
+				// структура? перименование файлов/вписать в инструкцию? очистка ненужных?
 
-				DocxCurriculum curriculum = new DocxCurriculum(path + ""); // файл берется с сервера, нужна структура файлов
-				Contingent contingent = new Contingent(path + "");  // файл загружается с сервера
+				DocxCurriculum curriculum = new DocxCurriculum(filesPath + "curriculum.docx");
+				// файл берется с сервера - нужна структура файлов/путь из бд
+				Contingent contingent = new Contingent(filesPath + "contingent.xlsx");  // файл загружается с сервера
 																	// через отдельный контроллер, нужна структура файлов
 				var groups = contingent
 					.Where(s => s.CurriculumCode == curriculum.CurriculumCode.Replace("/", "\\"))

@@ -1,0 +1,58 @@
+﻿@inject ResidualKnowledgeTestApp.Client.Services.ICheckingDisciplinesService ProjectsService
+
+ <InputFile id="@Contingent" OnChange="UploadContingentFile" hidden multiple />
+
+
+@if (nEditing && nIsRendering)
+{
+   <MudText Typo="Typo.h6">Загрузка дополнительных файлов</MudText>
+
+   <div style="max-width: 600px;">
+        <MudCard Class="my-4">
+            <MudCardContent>
+                <MudElement Class="d-flex my-4">
+                    <div class="flex-grow-1"> @*Убрать пустой заголовок*@
+                        <MudTextField ReadOnly="true"
+                                      Label="Контингент (.xlsx)"
+                                      @bind-Value=Contingent /> @*заменить на имеющийся файл из бд??*@
+                    </div>
+                    <MudItem Class="flex-grow-0 ml-4 align-self-end">
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Filled.UploadFile"
+                                   for=Contingent
+                                   Class="d-inline-flex">
+                            Выбрать
+                        </MudButton>
+                    </MudItem>
+                </MudElement>
+            </MudCardContent>
+        </MudCard>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public bool nEditing { get; set; } = true;
+
+    [Parameter]
+    public bool nIsRendering { get; set; } = true;
+
+    private string Contingent;
+
+    private IBrowserFile contingentFile;
+
+    private void UploadContingentFile(InputFileChangeEventArgs e)
+    {
+        contingentFile = e.GetMultipleFiles().FirstOrDefault();
+        // Discipline.MidCerificationResultsPath = contingentFile == null ? "" : contingentFile.Name; // ProjectDTO??
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProjectsService.OnChange += StateHasChanged;
+    }
+
+}
