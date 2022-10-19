@@ -9,6 +9,7 @@ using AutoMapper;
 using ResidualKnowledgeTestApp.Shared.DTO;
 using System;
 using ResidualKnowledgeTestApp.Shared.ViewModels;
+using static System.Net.WebRequestMethods;
 
 namespace ResidualKnowledgeTestApp.Server.Controllers
 {
@@ -290,6 +291,8 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GetGeneratedLink(int id)
 		{
+			var exampleLink = "https://docs.google.com/spreadsheets/d/1k8Pq-Twu_UKUjRKZ2Og9zJrKg5vwkhjYJU08SDh5Cro/edit#gid=0";
+
 			var exists = await _projectsService.DoesProjectExist(id);
 			if (!exists)
 			{
@@ -302,6 +305,7 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
 				link = "";
 			}
 
+			link = exampleLink;
 			return Ok(link);
 		}
 	}

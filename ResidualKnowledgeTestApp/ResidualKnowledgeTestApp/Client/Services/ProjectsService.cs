@@ -11,10 +11,10 @@ using ResidualKnowledgeTestApp.Shared.ViewModels;
 
 namespace ResidualKnowledgeTestApp.Client.Services
 {
-	public class ProjectService : ICheckingDisciplinesService
+	public class ProjectsService : IProjectsService
 	{
 		private readonly HttpClient _httpClient;
-		public ProjectService(HttpClient httpClient)
+		public ProjectsService(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}

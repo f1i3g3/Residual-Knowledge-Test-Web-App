@@ -1,5 +1,5 @@
 ﻿@page "/create"
-@inject ResidualKnowledgeTestApp.Client.Services.ICheckingDisciplinesService ProjectsService
+@inject ResidualKnowledgeTestApp.Client.Services.IProjectsService ProjectsService
 @inject NavigationManager NavigationManager
 @using System.ComponentModel.DataAnnotations
 
@@ -16,7 +16,7 @@
                         <MudTextField ReadOnly="true"
                                       Label="Учебный план"
                                       @bind-Value="project.CurriculumFileName"
-                                      For="@(() => project.CurriculumFileName)" />
+                                      For="@(() => project.CurriculumFileName)" />  
                     </div>
                     <MudItem Class="flex-grow-0 ml-4 align-self-end">
                         <MudButton HtmlTag="label"
