@@ -11,10 +11,10 @@ using ResidualKnowledgeTestApp.Shared.ViewModels;
 
 namespace ResidualKnowledgeTestApp.Client.Services
 {
-	public class ProjectService : ICheckingDisciplinesService
+	public class ProjectsService : IProjectsService
 	{
 		private readonly HttpClient _httpClient;
-		public ProjectService(HttpClient httpClient)
+		public ProjectsService(HttpClient httpClient)
 		{
 			_httpClient = httpClient;
 		}
@@ -80,7 +80,7 @@ namespace ResidualKnowledgeTestApp.Client.Services
 				UserChoice.FilesShouldBeUpdated = true;
 			}
 
-			SheetLink = Project.SheetLink;
+			SheetLink = Project.SheetLink is null ? "" : Project.SheetLink;
 
 			OnChange.Invoke();
 		}
@@ -196,13 +196,17 @@ namespace ResidualKnowledgeTestApp.Client.Services
 
 		public async Task GetSheetLink(int projectId)
 		{
-			var link = await _httpClient.GetStringAsync($"api/sheetlink/{projectId}");
+			var link = await _httpClient.GetStringAsync($"api/projects/{projectId}/sheetlink");
 
 			if (link is not null)
 			{
 				SheetLink = link; 
 			}
-			
+			else
+			{
+				SheetLink = "";
+				throw new Exception();
+			}
 		}
 	}
 }

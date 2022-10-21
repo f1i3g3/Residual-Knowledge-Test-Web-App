@@ -1,10 +1,12 @@
 ﻿using ContingentParser;
 using CurriculumParser;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ResidualKnowledgeTestApp.Server.Repositories;
 using ResidualKnowledgeTestApp.Shared;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,12 +17,14 @@ namespace ResidualKnowledgeTestApp.Server.Services
 		//private readonly IMapper _mapper;
 		private readonly IProjectsRepository _projectsRepository;
 		private readonly ICheckingDisciplinesService _checkingDisciplinesService;
+		private readonly IWebHostEnvironment _environment;
 
 		public ProjectsService(IProjectsRepository projectsRepository,
-			ICheckingDisciplinesService checkingDisciplinesService)
+			ICheckingDisciplinesService checkingDisciplinesService, IWebHostEnvironment environment)
 		{
 			_projectsRepository = projectsRepository;
 			_checkingDisciplinesService = checkingDisciplinesService;
+			_environment = environment;
 		}
 
 		public async Task<Project> CreateProjectAsync(Project project) // createProjectVM
@@ -93,25 +97,25 @@ namespace ResidualKnowledgeTestApp.Server.Services
 		private async Task<string> GenerateLink(int projectId)
 		{
 			string link = null;
+			
 			try
 			{
-				string path = AppDomain.CurrentDomain.BaseDirectory;
+				string filesPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../Files/"; // redo with projectID
+				// Path.Combine(_environment.ContentRootPath, "Files", $"Project_{projectId}_Files");
+				// структура? перименование файлов/вписать в инструкцию? очистка ненужных?
 
-				DocxCurriculum curriculum = new DocxCurriculum(path + ""); // файл берется с сервера, нужна структура файлов
-
-				//var contingent = await _projectsRepository.GetWithEverythingAsync(); // файл загружается через отдельный контроллер
-				Contingent contingent = new Contingent(path + "списки студентов мат обес.xls"); // файл берется с сервера, нужна структура файлов
+				DocxCurriculum curriculum = new DocxCurriculum(filesPath + "curriculum.docx");
+				// файл берется с сервера - нужна структура файлов/путь из бд
+				Contingent contingent = new Contingent(filesPath + "contingent.xlsx");  // файл загружается с сервера
+																	// через отдельный контроллер, нужна структура файлов
 				var groups = contingent
 					.Where(s => s.CurriculumCode == curriculum.CurriculumCode.Replace("/", "\\"))
 					.Select(s => s.GroupInContingent)
 					.Distinct()
 					.ToList();
 
-				var user = new ResidualKnowledgeConsoleApp.User("Кузнецов", "Дмитрий", "Владимирович"); // здесь должен быть автор ответов - по идее, нужна авторизация/вносить самому
-				var config = new ResidualKnowledgeConsoleApp.MsFormsParserConfiguration(4, 8, 3, user); // взял, как в примере
-
 				var checkingDisciplines = await GetProjectCheckingDisciplinesAsync(projectId);
-				var consoleAppDisciplines = new List<ResidualKnowledgeConsoleApp.CheckingDiscipline>();
+				var consoleAppDisciplines = new List<ConsoleApp.CheckingDiscipline>();
 
 				foreach (var d in checkingDisciplines)
 				{
@@ -126,13 +130,16 @@ namespace ResidualKnowledgeTestApp.Server.Services
 					var curriculumDiscpImpl = curriculumDiscp.Implementations;
 					foreach (var i in curriculumDiscpImpl)
                     {
-						/*
+						//
 						var iComp = i.Competences;
+
+						/*
 						foreach(var c in iComp)
                         {
 							c.SingleOrDefault(x => x.Code == d.CheckingCompetences.Code);
                         }
 						*/
+						//
                     }
 
 					foreach (var c in d.CheckingCompetences)
@@ -141,45 +148,14 @@ namespace ResidualKnowledgeTestApp.Server.Services
 						consoleCheckCompet.Add(consoleCC);
 					}
 
-					var listOfMarks = new List<ResidualKnowledgeConsoleApp.MarkCriterion>(); // откуда?
+					// сопоставление компетенций с сервера и файла
+					var listOfMarks = new List<ConsoleApp.MarkCriterion>(); // с сервера
 
-					var consoleDiscp = new ResidualKnowledgeConsoleApp.CheckingDiscipline(curriculumDiscp, consoleCheckCompet, user, scale: listOfMarks,
-						config: config); // тестируется
-
+					var consoleDiscp = new ConsoleApp.CheckingDiscipline(curriculumDiscp, consoleCheckCompet, null, scale: listOfMarks);
 					consoleAppDisciplines.Add(consoleDiscp);
 				}
 
-				var userChoice = new ResidualKnowledgeConsoleApp.UserChoice(user, curriculum, contingent, consoleAppDisciplines);
-				var competenceCriterion = new List<ResidualKnowledgeConsoleApp.MarkCriterion>
-				{
-				new ResidualKnowledgeConsoleApp.MarkCriterion(90, 100, 'A', 5),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(80, 89, 'B', 4),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(70, 79, 'C', 4),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(60, 69, 'D', 3),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(50, 59, 'E', 3),
-				new ResidualKnowledgeConsoleApp.MarkCriterion(0, 49, 'F', 2)
-				 }; // это на серевер надо настроить же?
-
-				/*
-				var midCertificationResult = new List<ResidualKnowledgeConsoleApp.MidCerificationAssesmentResult>();
-				var studentAnswers = new List<ResidualKnowledgeConsoleApp.StudentAnswer>();
-				foreach (var d in consoleAppDisciplines)
-				{
-					var parser = new ResidualKnowledgeConsoleApp.ResidualKnowledgeInputFilesParser.ResidualKnowledgeDataParser(d, userChoice.Students);
-					var result = parser.Parse();
-					midCertificationResult.AddRange(result.MidCerificationResults);
-					studentAnswers.AddRange(result.StudentAnswers);
-					d.Questions.AddRange(result.Questions);
-				}
-
-				link = ResidualKnowledgeConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
-
-				var spreadsheetGenerator = new ResidualKnowledgeConsoleApp.GoogleSpreadsheetGenerator(userChoice, groups, competenceCriterion, studentAnswers, midCertificationResult);
-				spreadsheetGenerator.Generate(); // exception point
-
-				// link = ResidualKnowledgeConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
-				*/
-
+				link = "https://docs.google.com/spreadsheets/d/" + ConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
 				await _projectsRepository.UpdateSheetLink(projectId, link);
 
 				// обновление ссылки

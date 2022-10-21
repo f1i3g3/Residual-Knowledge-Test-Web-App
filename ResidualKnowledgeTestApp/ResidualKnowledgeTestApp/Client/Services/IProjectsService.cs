@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ResidualKnowledgeTestApp.Client.Services
 {
-    public interface ICheckingDisciplinesService
+    public interface IProjectsService
     {
         event Action OnChange;
 
@@ -35,7 +35,7 @@ namespace ResidualKnowledgeTestApp.Client.Services
 
         HashSet<CompetenceWithDisciplineDTO> SelectedCompetences { get; }
 
-        string SheetLink { get; }
+        public string SheetLink { get; set; }
 
         Task SaveMarkCriteria(int checkingDisciplineId, List<MarkCriterion> markCriteria);
 

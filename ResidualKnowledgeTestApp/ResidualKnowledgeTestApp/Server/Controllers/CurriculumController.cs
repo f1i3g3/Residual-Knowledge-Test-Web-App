@@ -101,7 +101,8 @@ namespace ResidualKnowledgeTestApp.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCurriculum([FromBody] Curriculum curriculumViewModel) // добавить id пользователя
         {
-            var path = Path.Combine(_environment.ContentRootPath, "Files", curriculumViewModel.FileName);
+            // где projectId??
+            var path = Path.Combine(_environment.ContentRootPath, "Files", curriculumViewModel.FileName); // projectId??
             var parsedCurriculum = new DocxCurriculum(path);
 
             //var fileInfo = new FileInfo(path);
