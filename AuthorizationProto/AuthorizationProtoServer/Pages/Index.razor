@@ -1,0 +1,19 @@
+﻿@page "/"
+@attribute [Authorize]
+@inject IAccountService AccountService
+
+<PageTitle>Index</PageTitle>
+
+<div class="p-4">
+    <div class="container">
+        <h1>Hi @AccountService.User.FirstName!</h1>
+        <p>You're logged in with Blazor WebAssembly!!</p>
+        <p><NavLink href="users">Manage Users</NavLink></p>
+    </div>
+</div>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
