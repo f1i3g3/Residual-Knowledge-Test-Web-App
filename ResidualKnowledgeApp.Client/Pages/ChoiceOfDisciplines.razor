@@ -1,0 +1,111 @@
+﻿@using ResidualKnowledgeApp.Shared.DTO;
+@inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
+
+@if (!ProjectsService.UserChoice.CurriculumSelected)
+{
+}
+else if (ProjectsService.UserChoice.DisciplinesSelected && !editing)
+{
+    <MudTable Items="@SelectedDisciplines"
+              Hover="true"
+              Dense="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Выбранные дисциплины</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="ChangeSelectedDisciplines" Class="ma-2" />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh><MudTableSortLabel SortBy="new Func<DisciplineDTO, object>(x => x.DisciplineCode)">Code</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<DisciplineDTO, object>(x => x.DisciplineName)">Name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<DisciplineDTO, object>(x => x.Semester)">Semester</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Code">@context.DisciplineCode</MudTd>
+            <MudTd DataLabel="Name">@context.DisciplineName</MudTd>
+            <MudTd DataLabel="Semester">@context.Semester</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+else if (DisciplinesForSelection != null)
+{
+    <MudTable Items="DisciplinesForSelection"
+              MultiSelection="true"
+              @bind-SelectedItems="@SelectedDisciplines"
+              Hover="true"
+              Dense="true"
+              Filter="new Func<DisciplineDTO, bool>(FilterFunc)">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Выбор дисциплин</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString" Placeholder="Поиск..." Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh><MudTableSortLabel SortBy="new Func<DisciplineDTO, object>(x => x.DisciplineCode)">Код</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<DisciplineDTO, object>(x => x.DisciplineName)">Название</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<DisciplineDTO, object>(x => x.Semester)">Семестр</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Code">@context.DisciplineCode</MudTd>
+            <MudTd DataLabel="Name">@context.DisciplineName</MudTd>
+            <MudTd DataLabel="Semester">@context.Semester</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager PageSizeOptions="new int[] { 50, 100 }" />
+        </PagerContent>
+    </MudTable>
+    <br />
+    <MudBlazor.MudButton Variant="Variant.Filled"
+                         Color="Color.Primary"
+                         StartIcon="@Icons.Material.Filled.Save"
+                         OnClick="SaveSelectedDisciplines">Сохранить</MudBlazor.MudButton>
+}
+else
+{
+    <div>Загрузка дисциплин...</div>
+}
+
+<br />
+<br />
+
+@code
+{
+    private bool editing;
+
+    [Parameter]
+    public HashSet<DisciplineDTO> DisciplinesForSelection { get; set; }
+
+    [Parameter]
+    public HashSet<DisciplineDTO> SelectedDisciplines { get; set; }
+
+    private string searchString = "";
+
+    private bool FilterFunc(DisciplineDTO discipline) => FilterFunc(discipline, searchString);
+
+    private bool FilterFunc(DisciplineDTO discipline, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (discipline.DisciplineCode.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (discipline.DisciplineName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (discipline.Semester.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        return false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ProjectsService.OnChange += StateHasChanged;
+    }
+
+    private async Task SaveSelectedDisciplines()
+    {
+        await ProjectsService.SetCheckingDisciplines(SelectedDisciplines);
+        editing = false;
+    }
+
+    private void ChangeSelectedDisciplines()
+    {
+        editing = true;
+    }
+}

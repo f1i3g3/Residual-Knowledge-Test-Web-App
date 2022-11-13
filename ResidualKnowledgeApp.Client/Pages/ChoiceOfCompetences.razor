@@ -1,0 +1,119 @@
+﻿@using MudBlazor;
+@using ResidualKnowledgeApp.Shared.DTO;
+@inject ResidualKnowledgeApp.Client.Services.IProjectsService CheckingDisciplinesService
+
+@if (!CheckingDisciplinesService.UserChoice.DisciplinesSelected)
+{
+}
+else if (CheckingDisciplinesService.UserChoice.CompetencesShouldBeUpdated || editing || 
+    !CheckingDisciplinesService.UserChoice.CompetencesSelected) @**@
+{
+    <MudTable Items="CompetencesForSelection"
+              MultiSelection="true"
+              @bind-SelectedItems="SelectedCompetences"
+              GroupBy="@_groupDefinition"
+              FixedHeader="true"
+              Hover="true"
+              Dense="true"
+              GroupFooterClass="mb-4">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Выбор компетенций</MudText>
+        </ToolBarContent>
+        <ColGroup>
+            <col style="width: 60px;" />
+            <col />
+            <col />
+        </ColGroup>
+        <HeaderContent>
+            <MudTh>Код</MudTh>
+            <MudTh>Описание</MudTh>
+        </HeaderContent>
+        <GroupHeaderTemplate>
+            <MudTh colspan="2">@($"{context.GroupName}: {context.Key.ToString()}")</MudTh>
+        </GroupHeaderTemplate>
+        <RowTemplate>
+            <MudTd DataLabel="Код">@context.Code</MudTd>
+            <MudTd DataLabel="Описание">@context.Description</MudTd>
+        </RowTemplate>
+        <GroupFooterTemplate>
+            <MudTh colspan="2"></MudTh>
+        </GroupFooterTemplate>
+    </MudTable>
+    <br />
+    <MudButton Variant="Variant.Filled"
+                         Color="Color.Primary"
+                         StartIcon="@Icons.Material.Filled.Save"
+                         OnClick="SaveSelectedCompetences">Сохранить</MudButton>
+ 
+                         
+}
+else
+{
+    <MudTable Items="SelectedCompetences"
+              GroupBy="@_groupDefinition"
+              FixedHeader="true"
+              Hover="false"
+              Dense="true"
+              GroupFooterClass="mb-4">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Компетенции, выбранные для проверки</MudText>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" OnClick="ChangeSelectedCompetences" Class="ma-2" />
+        </ToolBarContent>
+        <ColGroup>
+            <col style="width: 60px;" />
+            <col />
+            <col />
+        </ColGroup>
+        <HeaderContent>
+            <MudTh>Код</MudTh>
+            <MudTh>Описание</MudTh>
+        </HeaderContent>
+        <GroupHeaderTemplate>
+            <MudTh colspan="2">@($"{context.GroupName}: {context.Key.ToString()}")</MudTh>
+        </GroupHeaderTemplate>
+        <RowTemplate>
+            <MudTd DataLabel="Код">@context.Code</MudTd>
+            <MudTd DataLabel="Описание">@context.Description</MudTd>
+        </RowTemplate>
+        <GroupFooterTemplate>
+            <MudTh colspan="2"></MudTh>
+        </GroupFooterTemplate>
+    </MudTable>
+}
+<br />
+<br />
+
+@code
+{
+    private bool editing = false;
+
+    [Parameter]
+    public HashSet<CompetenceWithDisciplineDTO> CompetencesForSelection { get; set; }
+
+    [Parameter]
+    public HashSet<CompetenceWithDisciplineDTO> SelectedCompetences { get; set; }
+
+    private TableGroupDefinition<CompetenceWithDisciplineDTO> _groupDefinition = new()
+    {
+        GroupName = "Дисциплина",
+        Indentation = false,
+        Expandable = false,
+        Selector = (c) => $"[{c.Discipline.DisciplineCode}] {c.Discipline.DisciplineName}"
+    };
+
+    async Task SaveSelectedCompetences()
+    {
+        await CheckingDisciplinesService.SetCheckingCompetences(SelectedCompetences);
+        editing = false;
+    }
+
+    async Task ChangeSelectedCompetences()
+    {
+        editing = true;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        CheckingDisciplinesService.OnChange += StateHasChanged;
+    }
+}

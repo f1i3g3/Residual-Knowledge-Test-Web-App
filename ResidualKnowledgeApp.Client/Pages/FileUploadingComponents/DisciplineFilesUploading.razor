@@ -1,0 +1,153 @@
+﻿@using ResidualKnowledgeApp.Shared.DTO;
+@inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
+
+<InputFile id="@Id1" OnChange="UploadMidCertificationFile" hidden multiple />
+<InputFile id="@Id2" OnChange="UploadMsFormsFile" hidden multiple />
+<InputFile id="@Id3" OnChange="UploadTxtFormFile" hidden multiple />
+
+@if (Editing && IsRendering)
+{
+    <div style="max-width: 600px;">
+        <MudCard Class="my-4">
+            <MudCardContent>
+                <MudText Typo="Typo.h6">[@Discipline.Discipline.DisciplineCode] @Discipline.Discipline.DisciplineName</MudText>
+
+                <MudElement Class="d-flex my-4">
+                    <div class="flex-grow-1">
+                        <MudTextField ReadOnly="true"
+                                      Label="Результаты промежуточной аттестации"
+                                      @bind-Value="Discipline.MidCerificationResultsPath" />
+                    </div>
+                    <MudItem Class="flex-grow-0 ml-4 align-self-end">
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Filled.UploadFile"
+                                   for="@Id1"
+                                   Class="d-inline-flex">
+                            Выбрать
+                        </MudButton>
+                    </MudItem>
+                </MudElement>
+
+                <MudElement Class="d-flex my-4">
+                    <div class="flex-grow-1">
+                        <MudTextField ReadOnly="true"
+                                      Label="Ответы студентов MS Forms (.xlsx)"
+                                      @bind-Value="Discipline.MsFormsPath" />
+                    </div>
+                    <MudItem Class="flex-grow-0 ml-4 align-self-end">
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Filled.UploadFile"
+                                   for="@Id2"
+                                   Class="d-inline-flex">
+                            Выбрать
+                        </MudButton>
+                    </MudItem>
+                </MudElement>
+
+                <MudElement Class="d-flex my-4">
+                    <div class="flex-grow-1">
+                        <MudTextField ReadOnly="true"
+                                      Label="Форма с вопросами и вариантами ответов (.txt)"
+                                      @bind-Value="Discipline.TxtTestFormPath" />
+                    </div>
+                    <MudItem Class="flex-grow-0 ml-4 align-self-end">
+                        <MudButton HtmlTag="label"
+                                   Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   StartIcon="@Icons.Filled.UploadFile"
+                                   for="@Id3"
+                                   Class="d-inline-flex">
+                            Выбрать
+                        </MudButton>
+                    </MudItem>
+                </MudElement>
+
+                <MudNumericField @bind-Value="Discipline.QuestionsCount"
+                                 Label="Число вопросов"
+                                 Variant="Variant.Text"
+                                 Min="0" Max="30" />
+                <br />
+                <MarkCriteria @ref="MarkCriteriaRef" Discipline="Discipline" />
+
+            </MudCardContent>
+        </MudCard>
+    </div>
+}
+
+@code
+{
+    [Parameter]
+    public bool Editing { get; set; }
+
+    [Parameter]
+    public bool IsRendering { get; set; }
+
+    [Parameter]
+    public CheckingDisciplineDetailsDTO Discipline { get; set; }
+
+    private MarkCriteria MarkCriteriaRef;
+
+    private IBrowserFile midCerificationFile;
+    private IBrowserFile msFormsFile;
+    private IBrowserFile txtFormFile;
+
+    private string Id1;
+    private string Id2;
+    private string Id3;
+
+    protected override void OnParametersSet()
+    {
+        Id1 = $"{Discipline.Id}1";
+        Id2 = $"{Discipline.Id}2";
+        Id3 = $"{Discipline.Id}3";
+    }
+
+    private void UploadMidCertificationFile(InputFileChangeEventArgs e)
+    {
+        midCerificationFile = e.GetMultipleFiles().FirstOrDefault();
+        Discipline.MidCerificationResultsPath = midCerificationFile == null ? "" : midCerificationFile.Name;
+    }
+
+    private void UploadMsFormsFile(InputFileChangeEventArgs e)
+    {
+        msFormsFile = e.GetMultipleFiles().FirstOrDefault();
+        Discipline.MsFormsPath = msFormsFile == null ? "" : msFormsFile.Name;
+    }
+
+    private void UploadTxtFormFile(InputFileChangeEventArgs e)
+    {
+        txtFormFile = e.GetMultipleFiles().FirstOrDefault();
+        Discipline.TxtTestFormPath = txtFormFile == null ? "" : txtFormFile.Name;
+    }
+
+    public async Task Save()
+    {
+        var files = new List<IBrowserFile> { txtFormFile, msFormsFile, midCerificationFile };
+        foreach (var file in files)
+        {
+            if (file == null)
+            {
+                continue;
+            }
+            var folderName = $"Files\\Project_{ProjectsService.Project.Id}_Files";
+            using var content = new MultipartFormDataContent();
+            var fileContent = new StreamContent(file.OpenReadStream());
+            content.Add(content: fileContent, name: $"\"{folderName}\"", fileName: file.Name);
+            await ProjectsService.UploadFileAsync(content);
+        }
+
+        await ProjectsService.UpdateCheckingDisciplineFiles(Discipline.Id, new CheckingDisciplineDetailsDTO
+        {
+            MidCerificationResultsPath = Discipline.MidCerificationResultsPath,
+            MsFormsPath = Discipline.MsFormsPath,
+            TxtTestFormPath = Discipline.TxtTestFormPath,
+            QuestionsCount = Discipline.QuestionsCount,
+        });
+
+        await MarkCriteriaRef.Save();
+    }
+}

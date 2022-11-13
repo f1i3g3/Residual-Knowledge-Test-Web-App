@@ -1,0 +1,77 @@
+﻿@page "/projects/{id:int}"
+@inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
+@using ResidualKnowledgeApp.Client.Pages.FileUploadingComponents
+@using ResidualKnowledgeApp.Shared.DTO;
+
+@if (!render)
+{
+	<span>Проект загружается...</span>
+}
+else
+{
+	<MudElement Style="font-size: xx-large">@ProjectsService.Project.Name</MudElement>
+	<br />
+	<MudElement Style="font-size: large">@ProjectsService.Project.Curriculum.ProgrammeCode @ProjectsService.Project.Curriculum.ProgrammeName</MudElement>
+	<br />
+	<ChoiceOfDisciplines DisciplinesForSelection="@disciplinesForSelection"
+						 SelectedDisciplines="@selectedDisciplines" />
+
+	<ChoiceOfCompetences CompetencesForSelection="ProjectsService.CompetencesForSelection"
+						 SelectedCompetences="ProjectsService.SelectedCompetences" />
+
+	@*<UserInfo />*@
+
+	<FileUploading CheckingDisciplines="ProjectsService.CheckingDisciplines" />
+
+	<ContingentUploading/>
+
+
+	@* TODO: загрузка + инструктаж - в виде отдельного блока? *@
+
+	<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SetSheetLink">Сгенерировать ссылку на таблицу</MudButton>
+	<MudLink Href=@sheetLink>@sheetLink</MudLink>
+
+	@* center allign *@
+	@* слетела кодировка *@
+
+	
+}
+
+	
+@code
+{
+	[Parameter]
+	public int Id { get; set; }
+
+	private HashSet<DisciplineDTO> disciplinesForSelection = new HashSet<DisciplineDTO>();
+	private HashSet<DisciplineDTO> selectedDisciplines = new HashSet<DisciplineDTO>();
+	private bool render = false;
+	private string sheetLink = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		ProjectsService.OnChange += StateHasChanged;
+	}
+
+	protected override async Task OnParametersSetAsync()
+	{
+		await ProjectsService.LoadProject(Id);
+
+		disciplinesForSelection = ProjectsService.DisciplinesForSelection.ToHashSet();
+
+		var selectedDisciplinesIds = ProjectsService.CheckingDisciplines.Select(cd => cd.Discipline.Id);
+		selectedDisciplines = disciplinesForSelection.Where(d => selectedDisciplinesIds.Contains(d.Id)).ToHashSet();
+
+		await SetSheetLink();
+
+		render = true;
+	}
+
+	private async Task SetSheetLink()
+	{
+		await ProjectsService.GetSheetLink(Id);
+		sheetLink = ProjectsService.SheetLink;
+		
+		StateHasChanged();
+	}
+}
