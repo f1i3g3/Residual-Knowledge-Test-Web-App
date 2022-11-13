@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ResidualKnowledgeApp.Client\ResidualKnowledgeApp.Client.csproj" />
     <ProjectReference Include="..\ResidualKnowledgeApp.ConsoleApp\ResidualKnowledgeApp.ConsoleApp.csproj" />
     <ProjectReference Include="..\ResidualKnowledgeApp.ContingentParser\ResidualKnowledgeApp.ContingentParser.csproj" />
     <ProjectReference Include="..\ResidualKnowledgeApp.CurriculumParser\ResidualKnowledgeApp.CurriculumParser.csproj" />
