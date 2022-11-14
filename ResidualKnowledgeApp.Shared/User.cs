@@ -1,4 +1,6 @@
-﻿namespace ResidualKnowledgeApp.Shared
+﻿using System.Security.Principal;
+
+namespace ResidualKnowledgeApp.Shared
 {
     public class User : IEntity
     {
@@ -13,5 +15,13 @@
         public string RightAnswersEmail { get; set; }
 
         public int ProjectId { get; set; }
+
+        public Role Role { get; set; } = Role.User; // TODO
+    }
+
+    public enum Role
+    {
+        User,
+        Adin
     }
 }

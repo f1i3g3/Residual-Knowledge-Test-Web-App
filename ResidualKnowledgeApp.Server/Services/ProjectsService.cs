@@ -86,7 +86,12 @@ namespace ResidualKnowledgeApp.Server.Services
 			return link;
 		}
 
-		private async Task<string> GenerateLink(int projectId)
+        /// <summary>
+        /// Получение сгенерированной ссылки на гугл-документ
+        /// </summary>
+        /// <param name="projectId"></param>
+        /// <returns></returns>
+        private async Task<string> GenerateLink(int projectId)
 		{
 			string link = null;
 			

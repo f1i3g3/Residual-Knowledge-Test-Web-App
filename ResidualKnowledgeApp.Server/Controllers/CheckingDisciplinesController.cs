@@ -134,22 +134,5 @@ namespace ResidualKnowledgeApp.Server.Controllers
             await _checkingDisciplinesService.GetMarkCriteria(checkingDisciplineId);
             return Ok();
         }
-
-        /// <summary>
-        /// Получение сгенерированной ссылки на гугл-документ
-        /// </summary>
-        /// <param name="checkingDisciplineId"></param>
-        /// <returns></returns>
-        [HttpGet("criteria/{checkingDisciplineId}")]
-        public async Task<ActionResult> GetGeneratedSheet(int checkingDisciplineId) // TODO: перенести в проекты/отдельный контроллер!!
-        {
-            var exists = await _checkingDisciplinesService.DoesCheckingDisciplineExist(checkingDisciplineId); // redo
-            if (!exists)
-            {
-                return NotFound();
-            }
-            await _checkingDisciplinesService.GetGeneratedSheet(checkingDisciplineId);
-            return Ok();
-        }
     }
 }

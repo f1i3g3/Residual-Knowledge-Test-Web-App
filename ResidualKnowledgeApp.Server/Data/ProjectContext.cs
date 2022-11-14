@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ResidualKnowledgeApp.Shared;
 
 namespace ResidualKnowledgeApp.Server
 {

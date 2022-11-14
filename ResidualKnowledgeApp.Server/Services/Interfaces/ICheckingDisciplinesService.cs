@@ -19,6 +19,5 @@
         Task<List<CheckingDiscipline>> GetPlainProjectCheckingDisciplinesAsync(int projectId);
         Task SetMarkCriteria(int checkingDisciplineId, List<MarkCriterion> markCriteria);
         Task<List<MarkCriterion>> GetMarkCriteria(int checkingDisciplineId);
-        Task<string> GetGeneratedSheet(int checkingDisciplineId); // вернуть ссылку на таблицу
     }
 }
