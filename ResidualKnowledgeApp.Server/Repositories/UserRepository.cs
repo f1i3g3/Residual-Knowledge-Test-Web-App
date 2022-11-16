@@ -3,18 +3,18 @@ using ResidualKnowledgeApp.Server.Repositories.Common;
 
 namespace ResidualKnowledgeApp.Server.Repositories
 {
-    public class UserRepository : CrudRepository<User>, IUserRepository
-    {
-        public UserRepository(ProjectContext context)
-            : base(context)
-        {
+	public class UserRepository : CrudRepository<User>, IUserRepository
+	{
+		public UserRepository(ProjectContext context)
+			: base(context)
+		{
 
-        }
+		}
 
-        public async Task<User> GetProjectUserAsync(int projectId)
-        {
-            return await Context.Set<User>()
-                .FirstOrDefaultAsync(u => u.ProjectId == projectId);
-        }
-    }
+		public async Task<User> GetProjectUserAsync(int projectId)
+		{
+			return await Context.Set<User>()
+				.FirstOrDefaultAsync(u => u.ProjectId == projectId);
+		}
+	}
 }

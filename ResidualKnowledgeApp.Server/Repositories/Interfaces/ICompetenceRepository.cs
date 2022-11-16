@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 
 namespace ResidualKnowledgeApp.Server.Repositories
 {
-    public interface ICompetenceRepository : ICrudRepository<Competence>
-    {
-        Task<List<Competence>> GetFilteredCompetences(Expression<Func<Competence, bool>> p);
-    }
+	public interface ICompetenceRepository : ICrudRepository<Competence>
+	{
+		Task<List<Competence>> GetFilteredCompetences(Expression<Func<Competence, bool>> p);
+	}
 }

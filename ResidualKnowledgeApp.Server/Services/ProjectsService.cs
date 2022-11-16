@@ -10,27 +10,37 @@ namespace ResidualKnowledgeApp.Server.Services
 		private readonly IProjectsRepository _projectsRepository;
 		private readonly ICheckingDisciplinesService _checkingDisciplinesService;
 		private readonly IWebHostEnvironment _environment;
+		private readonly ILogger<ProjectsService> _logger;
 
 		public ProjectsService(IProjectsRepository projectsRepository,
-			ICheckingDisciplinesService checkingDisciplinesService, IWebHostEnvironment environment)
+			ICheckingDisciplinesService checkingDisciplinesService, IWebHostEnvironment environment, ILogger<ProjectsService> logger)
 		{
 			_projectsRepository = projectsRepository;
 			_checkingDisciplinesService = checkingDisciplinesService;
 			_environment = environment;
+			_logger = logger;
 		}
 
 		public async Task<Project> CreateProjectAsync(Project project) // createProjectVM
 		{
-			//var project = _mapper.Map<Project>(projectVM);
+			_logger.LogInformation($"Creating project with id {project.Id}...");
+			
 			project.CreationTime = DateTime.Now;
 			project.LastEditionTime = DateTime.Now;
+
+			_logger.LogInformation(project.CurriculumId.ToString());
 			var projectId = await _projectsRepository.AddAsync(project);
+			_logger.LogInformation("Created!");
+
 			return project;
 		}
 
 		public async Task DeleteProjectAsync(int projectId)
 		{
+			_logger.LogInformation($"Deleting project with id {projectId}...");
+			// MarkCriteria -> CheckingDisciplines
 			await _projectsRepository.DeleteAsync(projectId);
+			_logger.LogInformation("Deleted!");
 		}
 
 		public async Task<bool> DoesProjectExist(int projectId)
@@ -41,19 +51,28 @@ namespace ResidualKnowledgeApp.Server.Services
 
 		public async Task<IEnumerable<Project>> GetAllProjectsAsync()
 		{
+			_logger.LogInformation("Trying to get all projects...");
 			var projects = await _projectsRepository.GetAllWithCurriculumAsync();
+			_logger.LogInformation("Returning...");
 			return projects;
 		}
 
 		public async Task<Project> GetProjectAsync(int projectId)
 		{
+			_logger.LogInformation($"Trying to get project with id {projectId}...");
+
 			var project = await _projectsRepository.GetWithEverythingAsync(projectId);
+			_logger.LogInformation(project.CurriculumId.ToString());
+
+			_logger.LogInformation("Returning...");
 			return project;
 		}
 
 		public async Task UpdateProjectAsync(int projectId, object update)
 		{
+			_logger.LogInformation($"Updating project with id {projectId}...");
 			await _projectsRepository.UpdateAsync(projectId, update);
+			_logger.LogInformation("Updated!");
 			//var project = await _projectsRepository.GetWithCheckingDisciplinesAsync(projectId);
 			//await _checkingDisciplinesService.DeleteProjectCheckingDisciplines(projectId, project.CheckingDisciplines);
 			//await _checkingDisciplinesService.AddProjectCheckingDisciplines(projectId, update.CheckingDisciplines);
@@ -76,28 +95,30 @@ namespace ResidualKnowledgeApp.Server.Services
 
 		public async Task<string> GetSheetLink(int projectId)
 		{
+			_logger.LogInformation($"Getting sheet link for project with id {projectId}...");
 			var link = await _projectsRepository.GetSheetLink(projectId);
 
 			if (link == null)
-            {
+			{
 				link = await GenerateLink(projectId);
-            }
+			}
 
+			_logger.LogInformation($"Returning...");
 			return link;
 		}
 
-        /// <summary>
-        /// Получение сгенерированной ссылки на гугл-документ
-        /// </summary>
-        /// <param name="projectId"></param>
-        /// <returns></returns>
-        private async Task<string> GenerateLink(int projectId)
+		/// <summary>
+		/// Получение сгенерированной ссылки на гугл-документ
+		/// </summary>
+		/// <param name="projectId"></param>
+		/// <returns></returns>
+		private async Task<string> GenerateLink(int projectId)
 		{
 			string link = null;
 			
 			try
 			{
-				string filesPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../Files/"; // redo with projectID
+				string filesPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../ServerFiles/"; // redo with projectID
 				// Path.Combine(_environment.ContentRootPath, "Files", $"Project_{projectId}_Files");
 				// структура? перименование файлов/вписать в инструкцию? очистка ненужных?
 
@@ -126,18 +147,18 @@ namespace ResidualKnowledgeApp.Server.Services
 					// var algebraCompetences = algebra.Implementations[0].Competences.ToList();
 					var curriculumDiscpImpl = curriculumDiscp.Implementations;
 					foreach (var i in curriculumDiscpImpl)
-                    {
+					{
 						//
 						var iComp = i.Competences;
 
 						/*
 						foreach(var c in iComp)
-                        {
+						{
 							c.SingleOrDefault(x => x.Code == d.CheckingCompetences.Code);
-                        }
+						}
 						*/
 						//
-                    }
+					}
 
 					foreach (var c in d.CheckingCompetences)
 					{

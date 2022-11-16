@@ -1,15 +1,15 @@
 ﻿namespace ResidualKnowledgeApp.Server.Repositories.Common
 {
-    public interface ICrudRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : IEntity
-    {
-        Task<int> AddAsync(TEntity item);
+	public interface ICrudRepository<TEntity> : IReadOnlyRepository<TEntity> where TEntity : IEntity
+	{
+		Task<int> AddAsync(TEntity item);
 
-        Task DeleteAsync(int id);
-        
-        Task UpdateAsync(int id, object item);
+		Task DeleteAsync(int id);
 
-        void Detach(TEntity entity);
+		Task UpdateAsync(int id, object item);
 
-        void DetachRange(IEnumerable<TEntity> entities);
-    }
+		void Detach(TEntity entity);
+
+		void DetachRange(IEnumerable<TEntity> entities);
+	}
 }

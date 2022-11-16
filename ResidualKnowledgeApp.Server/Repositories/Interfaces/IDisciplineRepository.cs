@@ -2,10 +2,10 @@
 
 namespace ResidualKnowledgeApp.Server.Repositories
 {
-    public interface IDisciplineRepository : ICrudRepository<Discipline>
-    {
-        Task<Discipline> GetWithCompetencesAsync(int disciplineId);
+	public interface IDisciplineRepository : ICrudRepository<Discipline>
+	{
+		Task<Discipline> GetWithCompetencesAsync(int disciplineId);
 
-        Task AddCompetences(int disciplineId, List<Competence> competences);
-    }
+		Task AddCompetences(int disciplineId, List<Competence> competences);
+	}
 }

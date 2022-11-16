@@ -1,7 +1,8 @@
 ﻿namespace ResidualKnowledgeApp.Shared
 {
-	public interface IEntity
+	public enum UserRole
 	{
-		int Id { get; set; }
+		User,
+		Admin
 	}
 }

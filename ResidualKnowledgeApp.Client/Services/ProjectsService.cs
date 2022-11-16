@@ -78,7 +78,7 @@ namespace ResidualKnowledgeApp.Client.Services
 			OnChange.Invoke();
 		}
 
-		public async Task<CurriculumDTO> UploadCurriculumAsync(Curriculum curriculum, HttpContent content) // стоит сделать createCurriculumVM и запихать в него контент
+		public async Task<CurriculumDTO> UploadCurriculumAsync(Curriculum curriculum, HttpContent content)
 		{
 			await _httpClient.PostAsync("api/upload", content);
 

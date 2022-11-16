@@ -1,9 +1,9 @@
 ﻿namespace ResidualKnowledgeApp.Shared
 {
-    public enum Stage
-    {
-        DisciplinesChoosing,
-        CompetencesChoosing,
-        FilesUploading,
-    }
+	public enum Stage
+	{
+		DisciplinesChoosing,
+		CompetencesChoosing,
+		FilesUploading,
+	}
 }

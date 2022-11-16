@@ -2,8 +2,8 @@
 
 namespace ResidualKnowledgeApp.Server.Repositories
 {
-    public interface IUserRepository : ICrudRepository<User>
-    {
-        Task<User> GetProjectUserAsync(int projectId);
-    }
+	public interface IUserRepository : ICrudRepository<User>
+	{
+		Task<User> GetProjectUserAsync(int projectId);
+	}
 }

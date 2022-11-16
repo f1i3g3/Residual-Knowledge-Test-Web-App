@@ -10,7 +10,7 @@
 
         Task DeleteProjectAsync(int projectId);
 
-        Task<Project> CreateProjectAsync(Project projectVM); // createProjectViewModel better
+        Task<Project> CreateProjectAsync(Project projectVM);
 
         Task UpdateProjectAsync(int projectId, object update);
 

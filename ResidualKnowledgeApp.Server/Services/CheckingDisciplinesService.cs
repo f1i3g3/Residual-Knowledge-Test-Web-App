@@ -9,13 +9,15 @@ namespace ResidualKnowledgeApp.Server.Services
         private readonly IMapper _mapper;
         private readonly ICheckingDisciplineRepository _checkingDisciplineRepository;
         private IMarkCriterionRepository _markCriterionRepository;
+        private readonly ILogger<CheckingDisciplinesService> _logger;
 
         public CheckingDisciplinesService(IMapper mapper, ICheckingDisciplineRepository checkingDisciplineRepository,
-            IMarkCriterionRepository markCriterionRepository)
+            IMarkCriterionRepository markCriterionRepository, ILogger<CheckingDisciplinesService> logger)
         {
             _mapper = mapper;
             _checkingDisciplineRepository = checkingDisciplineRepository;
             _markCriterionRepository = markCriterionRepository;
+            _logger = logger;
         }
 
         /// <summary>

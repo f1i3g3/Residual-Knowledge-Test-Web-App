@@ -7,6 +7,11 @@
     <EditForm Model="@project" OnValidSubmit="HandleSubmit">
         <DataAnnotationsValidator />
         <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">Создать проект</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
             <MudCardContent>
                 <MudTextField Label="Название проекта" @bind-Value="project.Name" For="@(() => project.Name)" />
                 <br />
@@ -69,11 +74,11 @@
         var fileContent = new StreamContent(file.OpenReadStream());
         content.Add(
             content: fileContent,
-            name: "\"Files\"",
+            name: $"\"ServerFiles\"User_0\"Project_{createdProject.Id}\"",
             fileName: file.Name);
-        ;
-        var createCurriculumVM = new ResidualKnowledgeApp.Shared.Curriculum { FileName = project.CurriculumFileName, ProjectId = createdProject.Id };
-        var createdCurriculum = await ProjectsService.UploadCurriculumAsync(createCurriculumVM, content); // поменять тип
+        
+        var createCurriculumVM = new Curriculum { FileName = project.CurriculumFileName, ProjectId = createdProject.Id };
+        var createdCurriculum = await ProjectsService.UploadCurriculumAsync(createCurriculumVM, content); 
 
         NavigationManager.NavigateTo($"projects/{createdProject.Id}");
     }

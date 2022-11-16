@@ -38,7 +38,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		/// Получение всех проектов
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet] // фильтр потом
+		[HttpGet]
 		[ProducesResponseType(typeof(List<ProjectOverviewDTO>), StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetAllProjects()
 		{
@@ -259,10 +259,10 @@ namespace ResidualKnowledgeApp.Server.Controllers
 			{
 				var update = new
 				{
-					FirstName = user.FirstName,
-					LastName = user.LastName,
-					Patronymic = user.Patronymic,
-					RightAnswersEmail = user.RightAnswersEmail
+                    user.FirstName,
+                    user.LastName,
+                    user.Patronymic,
+					user.RightAnswersEmail
 				};
 				await _userService.UpdateUserAsync(user.Id, update);
 			}

@@ -6,28 +6,28 @@ using System.Text.Json.Serialization;
 
 namespace ResidualKnowledgeApp.Shared
 {
-    public class Project : IEntity
-    {
-        public int Id { get; set; }
+	public class Project : IEntity
+	{
+		public int Id { get; set; }
 
-        [Required]
-        public string Name { get; set; }
+		[Required]
+		public string Name { get; set; }
 
-        public DateTime CreationTime { get; set; }
-       
-        public DateTime LastEditionTime { get; set; }
+		public DateTime CreationTime { get; set; }
+	   
+		public DateTime LastEditionTime { get; set; }
 
-        public int? CurriculumId { get; set; }
+		public int? CurriculumId { get; set; }
 
-        [ForeignKey(nameof(CurriculumId))]
-        public Curriculum Curriculum { get; set; }
+		[ForeignKey(nameof(CurriculumId))]
+		public Curriculum Curriculum { get; set; }
 
-        public Stage Stage { get; set; }
+		public Stage Stage { get; set; }
 
-        public List<CheckingDiscipline> CheckingDisciplines { get; set; } = new List<CheckingDiscipline>();
+		public List<CheckingDiscipline> CheckingDisciplines { get; set; } = new List<CheckingDiscipline>();
 
-        public string GoogleSheetLink { get; set; }
+		public string GoogleSheetLink { get; set; } = String.Empty;
 
-        // public User User { get; set; }
-    }
+		public User User { get; set; }
+	}
 }

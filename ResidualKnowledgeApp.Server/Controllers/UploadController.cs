@@ -10,35 +10,37 @@ using System.Threading.Tasks;
 
 namespace ResidualKnowledgeApp.Server.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UploadController : ControllerBase
-    {
-        private readonly IWebHostEnvironment environment;
-        public UploadController(IWebHostEnvironment environment)
-        {
-            this.environment = environment;
-        }
+	[Route("api/[controller]")]
+	[ApiController]
+	public class UploadController : ControllerBase
+	{
+		private readonly IWebHostEnvironment environment;
+		public UploadController(IWebHostEnvironment environment)
+		{
+			this.environment = environment;
+		}
 
-        /// <summary>
-        /// Загрузка файла
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task Post()
-        {
-            if (HttpContext.Request.Form.Files.Any())
-            {
-                var file = HttpContext.Request.Form.Files.FirstOrDefault();
-                var directory = Path.Combine(environment.ContentRootPath, file.Name);
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-                var path = Path.Combine(directory, file.FileName);
-                using var stream = new FileStream(path, FileMode.Create);
-                await file.CopyToAsync(stream);
-            }
-        }
-    }
+		/// <summary>
+		/// Загрузка файла
+		/// </summary>
+		/// <returns></returns>
+		[HttpPost]
+		public async Task Post()
+		{
+			if (HttpContext.Request.Form.Files.Any())
+			{
+				var file = HttpContext.Request.Form.Files.FirstOrDefault();
+
+				var directory = Path.Combine(environment.ContentRootPath, file?.Name);
+				if (!Directory.Exists(directory))
+				{
+					Directory.CreateDirectory(directory);
+				}
+
+				var path = Path.Combine(directory, file.FileName);
+				using var stream = new FileStream(path, FileMode.Create);
+				await file.CopyToAsync(stream);
+			}
+		}
+	}
 }

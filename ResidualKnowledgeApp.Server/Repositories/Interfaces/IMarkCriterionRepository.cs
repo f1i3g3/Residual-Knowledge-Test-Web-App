@@ -2,7 +2,7 @@
 
 namespace ResidualKnowledgeApp.Server.Repositories
 {
-    public interface IMarkCriterionRepository : ICrudRepository<MarkCriterion>
-    {
-    }
+	public interface IMarkCriterionRepository : ICrudRepository<MarkCriterion>
+	{
+	}
 }
