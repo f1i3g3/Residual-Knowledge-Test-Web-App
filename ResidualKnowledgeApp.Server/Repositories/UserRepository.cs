@@ -11,10 +11,12 @@ namespace ResidualKnowledgeApp.Server.Repositories
 
 		}
 
+		/*
 		public async Task<User> GetProjectUserAsync(int projectId)
 		{
 			return await Context.Set<User>()
 				.FirstOrDefaultAsync(u => u.ProjectId == projectId);
 		}
+		*/
 	}
 }

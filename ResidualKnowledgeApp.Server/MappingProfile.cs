@@ -37,7 +37,8 @@ namespace ResidualKnowledgeApp.Server
 			CreateMap<Curriculum, CurriculumDTO>();
 
 			CreateMap<CreateProjectVM, Project>()
-				.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
+				.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+				.ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
 
 			CreateMap<Project, ProjectDetailsDTO>()
 				.ForMember(dto => dto.Curriculum, opt => opt.MapFrom(p => p.Curriculum))

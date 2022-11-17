@@ -83,13 +83,14 @@ namespace ResidualKnowledgeApp.Client.Services
 			await _httpClient.PostAsync("api/upload", content);
 
 			var response = await _httpClient.PostAsJsonAsync($"api/curriculum", curriculum);
-			Curriculum = await response.Content.ReadFromJsonAsync<CurriculumDTO>();
+            Curriculum = await response.Content.ReadFromJsonAsync<CurriculumDTO>();
 
-			await GetDisciplinesForSelectionAsync(Curriculum.Id);
+            await GetDisciplinesForSelectionAsync(Curriculum.Id); // HERE!
 
-			UserChoice.CurriculumSelected = true;
+            UserChoice.CurriculumSelected = true;
 
-			await LoadProject(curriculum.ProjectId);
+			Console.WriteLine(4);
+            await LoadProject(curriculum.ProjectId);
 
 			OnChange.Invoke();
 			return Curriculum;
@@ -97,7 +98,7 @@ namespace ResidualKnowledgeApp.Client.Services
 
 		private async Task<List<DisciplineDTO>> GetDisciplinesForSelectionAsync(int curriculumId)
 		{
-			DisciplinesForSelection = await _httpClient.GetFromJsonAsync<List<DisciplineDTO>>($"api/curriculum/disciplines/{curriculumId}");
+			DisciplinesForSelection = await _httpClient.GetFromJsonAsync<List<DisciplineDTO>>($"api/curriculum/disciplines/{curriculumId}"); // discipline with id0
 			OnChange.Invoke();
 			return DisciplinesForSelection;
 		}
@@ -191,13 +192,12 @@ namespace ResidualKnowledgeApp.Client.Services
 		{
 			var link = await _httpClient.GetStringAsync($"api/projects/{projectId}/sheetlink");
 
-			if (link is not null)
+			if (!String.IsNullOrEmpty(link))
 			{
 				SheetLink = link; 
 			}
 			else
 			{
-				SheetLink = "";
 				throw new Exception();
 			}
 		}

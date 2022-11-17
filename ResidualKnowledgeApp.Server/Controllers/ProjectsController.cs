@@ -1,15 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using ResidualKnowledgeApp.Shared;
 using ResidualKnowledgeApp.Server.Services;
-using System.Linq;
 using AutoMapper;
 using ResidualKnowledgeApp.Shared.DTO;
-using System;
 using ResidualKnowledgeApp.Shared.ViewModels;
-using static System.Net.WebRequestMethods;
 
 namespace ResidualKnowledgeApp.Server.Controllers
 {
@@ -19,13 +12,14 @@ namespace ResidualKnowledgeApp.Server.Controllers
 	{
 		private readonly IMapper _mapper;
 		private readonly IProjectsService _projectsService;
-		private ICheckingDisciplinesService _checkingDisciplinesService;
-		private ICompetenceService _competenceService;
-		private IUserService _userService;
+		private readonly ICheckingDisciplinesService _checkingDisciplinesService;
+		private readonly ICompetenceService _competenceService;
+		private readonly IUserService _userService;
+
 
 		public ProjectsController(IMapper mapper, ICompetenceService competenceService,
 			IProjectsService projectsService, ICheckingDisciplinesService checkingDisciplinesService,
-			IUserService userService)
+			IUserService userService, IWebHostEnvironment environment)
 		{
 			_competenceService = competenceService;
 			_mapper = mapper;
@@ -78,7 +72,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		{
 			var createModel = _mapper.Map<Project>(projectVM);
 			var created = await _projectsService.CreateProjectAsync(createModel);
-			//return CreatedAtAction(nameof(CreateProject), new { projectId = id }, projectVM);
+			// return CreatedAtAction(nameof(CreateProject), new { projectId = id }, projectVM);
 			var mapped = _mapper.Map<ProjectDetailsDTO>(created);
 			return Ok(mapped);
 		}
@@ -91,7 +85,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		/// <returns></returns>
 		[HttpPut("{id}")]
 		[ProducesResponseType(StatusCodes.Status204NoContent)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]  // добавить ограничение доступа
+		[ProducesResponseType(StatusCodes.Status404NotFound)] 
 		public async Task<IActionResult> UpdateProject(int id, Project update)
 		{
 			var exists = await _projectsService.DoesProjectExist(id);
@@ -129,7 +123,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet("disciplines/{id}")] // фильтр потом
+		[HttpGet("disciplines/{id}")]
 		[ProducesResponseType(typeof(List<CheckingDisciplineDetailsDTO>), StatusCodes.Status200OK)]
 		public async Task<IActionResult> GetProjectCheckingDiscipline(int id)
 		{
@@ -146,7 +140,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		/// <returns></returns>
 		[HttpPut("disciplines/set/{projectId}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]  // добавить ограничение доступа
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> SetCheckingDisciplinesOfProject(int projectId, [FromBody] List<DisciplineDTO> disciplines)
 		{
 			var exists = await _projectsService.DoesProjectExist(projectId);
@@ -184,9 +178,9 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpGet("competences/{id}")] // фильтр потом
+		[HttpGet("competences/{id}")]
 		[ProducesResponseType(typeof(List<CompetenceWithDisciplineDTO>), StatusCodes.Status200OK)]
-		public async Task<IActionResult> GetProjectCheckingCompetences(int id) // не вызывается
+		public async Task<IActionResult> GetProjectCheckingCompetences(int id)
 		{
 			var checkingDisciplines = await _projectsService.GetProjectCheckingDisciplinesAsync(id);
 			var userSelections = checkingDisciplines.SelectMany(cd => cd.UserSelection).ToList();
@@ -245,6 +239,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		/// </summary>
 		/// <param name="user"></param>
 		/// <returns></returns>
+		/*
 		[HttpPut("userinfo/set")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -259,9 +254,9 @@ namespace ResidualKnowledgeApp.Server.Controllers
 			{
 				var update = new
 				{
-                    user.FirstName,
-                    user.LastName,
-                    user.Patronymic,
+					user.FirstName,
+					user.LastName,
+					user.Patronymic,
 					user.RightAnswersEmail
 				};
 				await _userService.UpdateUserAsync(user.Id, update);
@@ -272,6 +267,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 			}
 			return Ok();
 		}
+		*/
 
 		//[HttpGet]
 		//[ProducesResponseType(StatusCodes.Status200OK)]
@@ -291,8 +287,6 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GetGeneratedLink(int id)
 		{
-			var exampleLink = "https://docs.google.com/spreadsheets/d/1k8Pq-Twu_UKUjRKZ2Og9zJrKg5vwkhjYJU08SDh5Cro/edit#gid=0";
-
 			var exists = await _projectsService.DoesProjectExist(id);
 			if (!exists)
 			{
@@ -300,12 +294,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 			}
 
 			var link = await _projectsService.GetSheetLink(id);
-			if (link is null)
-			{
-				link = "";
-			}
 
-			link = exampleLink;
 			return Ok(link);
 		}
 	}

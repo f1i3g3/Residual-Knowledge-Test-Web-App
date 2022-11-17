@@ -14,10 +14,12 @@ namespace ResidualKnowledgeApp.Server.Controllers
 	[ApiController]
 	public class UploadController : ControllerBase
 	{
-		private readonly IWebHostEnvironment environment;
-		public UploadController(IWebHostEnvironment environment)
+		private readonly IWebHostEnvironment _environment;
+		private readonly ILogger<UploadController> _logger;	
+		public UploadController(IWebHostEnvironment environment, ILogger<UploadController> logger)
 		{
-			this.environment = environment;
+			_environment = environment;
+			_logger = logger;
 		}
 
 		/// <summary>
@@ -30,8 +32,10 @@ namespace ResidualKnowledgeApp.Server.Controllers
 			if (HttpContext.Request.Form.Files.Any())
 			{
 				var file = HttpContext.Request.Form.Files.FirstOrDefault();
+				var filePath = file.Name.Replace(" ", "\\");
 
-				var directory = Path.Combine(environment.ContentRootPath, file?.Name);
+				var directory = Path.Combine(_environment.ContentRootPath, filePath);
+				_logger.LogInformation($"Adding file {file.FileName} to directory {directory}...");
 				if (!Directory.Exists(directory))
 				{
 					Directory.CreateDirectory(directory);
@@ -40,6 +44,8 @@ namespace ResidualKnowledgeApp.Server.Controllers
 				var path = Path.Combine(directory, file.FileName);
 				using var stream = new FileStream(path, FileMode.Create);
 				await file.CopyToAsync(stream);
+
+				_logger.LogInformation("Success!");
 			}
 		}
 	}

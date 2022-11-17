@@ -45,6 +45,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
+    <Folder Include="ServerFiles\User_0\" />
   </ItemGroup>
 
 </Project>

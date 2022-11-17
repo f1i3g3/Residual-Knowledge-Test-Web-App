@@ -10,16 +10,17 @@ namespace ResidualKnowledgeApp.Server.Controllers
 	[ApiController]
 	public class CurriculumController : ControllerBase
 	{
-		private ICurriculumsService _curriculumService;
-		private IWebHostEnvironment _environment;
-		private ICompetenceService _competenceService;
-		private IDisciplinesService _disciplinesService;
-		private IProjectsService _projectsService;
-		private IMapper _mapper;
+		private readonly ICurriculumsService _curriculumService;
+		private readonly IWebHostEnvironment _environment;
+		private readonly ICompetenceService _competenceService;
+		private readonly IDisciplinesService _disciplinesService;
+		private readonly IProjectsService _projectsService;
+		private readonly IMapper _mapper;
+		private readonly ILogger<CurriculumController> _logger;
 
 		public CurriculumController(ICurriculumsService curriculumService, IWebHostEnvironment environment,
-			ICompetenceService competenceService, IDisciplinesService disciplinesService, IMapper mapper, 
-			IProjectsService projectsService)
+			ICompetenceService competenceService, IDisciplinesService disciplinesService, IMapper mapper,
+			IProjectsService projectsService, ILogger<CurriculumController> logger)
 		{
 			_curriculumService = curriculumService;
 			_environment = environment;
@@ -27,6 +28,7 @@ namespace ResidualKnowledgeApp.Server.Controllers
 			_disciplinesService = disciplinesService;
 			_projectsService = projectsService;
 			_mapper = mapper;
+			_logger = logger;
 		}
 
 		/// <summary>
@@ -90,11 +92,14 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		[ProducesResponseType(typeof(CurriculumDTO), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[HttpPost]
-		public async Task<IActionResult> CreateCurriculum([FromBody] Curriculum curriculumViewModel) // ParserMethods
+		public async Task<IActionResult> CreateCurriculum([FromBody] Curriculum curriculumViewModel)
 		{
-			var path = Path.Combine(_environment.ContentRootPath, $"ServerFiles/User_0/Project_{curriculumViewModel.ProjectId}", curriculumViewModel.FileName);
-			var parsedCurriculum = new DocxCurriculum(path);
+            _logger.LogInformation($"Start CurriculumController!");
+            int adminId = 0;
+			var path = Path.Combine(_environment.ContentRootPath, "ServerFiles", $"User_{adminId}", $"Project_{curriculumViewModel.ProjectId}", curriculumViewModel.FileName);
+			_logger.LogInformation($"Creating curriculum from {path}");
 
+			var parsedCurriculum = new DocxCurriculum(path);
 			var curriculum = new Curriculum()
 			{
 				Code = parsedCurriculum.CurriculumCode,
@@ -105,28 +110,36 @@ namespace ResidualKnowledgeApp.Server.Controllers
 				ProjectId = curriculumViewModel.ProjectId
 			};
 
+			_logger.LogInformation("Creating on server...");
 			var curriculumId = await _curriculumService.CreateCurriculumAsync(curriculum);
+
+			_logger.LogInformation("Adding competences...");
 			await _competenceService.CreateCompetencesAsync(curriculumId, parsedCurriculum.Competences);
 
 			var currentYear = DateTime.Now.Year % 100;
-			var course = currentYear - int.Parse(parsedCurriculum.CurriculumCode.Substring(0, 2)); // тут неверно
-			var currentSemester = DateTime.Now.Month > 0 ? 8 : 8; // тут неверно
+			// пометки Ульяны, что немного не так
+			var course = currentYear - int.Parse(parsedCurriculum.CurriculumCode.Substring(0, 2));
+			var currentSemester = DateTime.Now.Month > 0 ? 8 : 8;
+			//
 			var filteredDisciplineImplementations = parsedCurriculum.Disciplines
 				.Where(d => d.Type == DisciplineType.Base)
 				.SelectMany(d => d.Implementations.Where(i => i.MonitoringTypes == "экзамен" && i.Semester < currentSemester));
 			//.Where(); // + добавить не ранее чем полгода или в прошлом семестре?
 			// добавить, что если дисциплины одинаковые, то выбираем реализацию с наибольшим семестром
-			// TODO
 
+			_logger.LogInformation("Adding disciplines");
 			await _disciplinesService.CreateDisciplinesAsync(curriculumId, filteredDisciplineImplementations);
-			await _projectsService.UpdateProjectAsync(curriculum.ProjectId, new { CurriculumId = curriculum.Id, Stage = Stage.DisciplinesChoosing });
+
+            _logger.LogInformation("Updating choosed...");
+            await _projectsService.UpdateProjectAsync(curriculum.ProjectId, new { CurriculumId = curriculum.Id, Stage = Stage.DisciplinesChoosing });
 
 			var mapped = _mapper.Map<CurriculumDTO>(curriculum);
-			return Ok(mapped); // CreatedAtAction(nameof(CreateCurriculum), new { curriculumId = curriculumId }, curriculum);
+            _logger.LogInformation($"Curriculum with id {curriculumId} created!");
+
+            return Ok(mapped); // CreatedAtAction(nameof(CreateCurriculum), new { curriculumId = curriculumId }, curriculum);
 		}
 
 
-		// Уточнить код ниже у Ульяны
 
 		//var filteredCurriculums = await _curriculumService.GetFilteredCurriculums(c => c.Code == parsedCurriculum.CurriculumCode);
 		//var exists = null != filteredCurriculums.FirstOrDefault();

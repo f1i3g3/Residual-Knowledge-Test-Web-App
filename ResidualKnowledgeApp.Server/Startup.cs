@@ -33,13 +33,6 @@ namespace ResidualKnowledgeApp.Server
 			IMapper mapper = mapperConfig.CreateMapper();
 			services.AddSingleton(mapper);
 
-			// LOGGER
-			/*
-			using var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
-													.SetMinimumLevel(LogLevel.Trace)
-													.AddConsole());
-			*/
-
 			// DATABASE
 			var connectionString = Configuration.GetConnectionString("DefaultConnection");
 			var identityString = Configuration.GetConnectionString("IdentityConnection");
@@ -110,8 +103,6 @@ namespace ResidualKnowledgeApp.Server
 				endpoints.MapControllers();
 				endpoints.MapFallbackToFile("index.html");
 			});
-
-			// app.Map("/hello", [Authorize] () => "Hello World!");
 		}
 	}
 }

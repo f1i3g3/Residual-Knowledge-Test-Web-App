@@ -68,13 +68,21 @@
     async Task HandleSubmit(EditContext context)
     {
         disableSubmit = true;
-        createdProject = await ProjectsService.CreateProject(new ResidualKnowledgeApp.Shared.ViewModels.CreateProjectVM { Name = project.Name });
+
+        var adminId = 0; // TODO
+        createdProject = await ProjectsService.CreateProject(new ResidualKnowledgeApp.Shared.ViewModels.CreateProjectVM { Name = project.Name,
+            User = new User 
+            { 
+                Id = adminId,
+                FirstName = "Admin",
+                LastName = "Anon"
+            } });
 
         using var content = new MultipartFormDataContent();
         var fileContent = new StreamContent(file.OpenReadStream());
         content.Add(
             content: fileContent,
-            name: $"\"ServerFiles\"User_0\"Project_{createdProject.Id}\"",
+            name: $"ServerFiles User_{adminId} Project_{createdProject.Id}",
             fileName: file.Name);
         
         var createCurriculumVM = new Curriculum { FileName = project.CurriculumFileName, ProjectId = createdProject.Id };

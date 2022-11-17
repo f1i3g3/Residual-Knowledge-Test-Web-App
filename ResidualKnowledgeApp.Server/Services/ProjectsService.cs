@@ -28,7 +28,7 @@ namespace ResidualKnowledgeApp.Server.Services
 			project.CreationTime = DateTime.Now;
 			project.LastEditionTime = DateTime.Now;
 
-			_logger.LogInformation(project.CurriculumId.ToString());
+			_logger.LogInformation(project.CurriculumId.ToString()); // Here!
 			var projectId = await _projectsRepository.AddAsync(project);
 			_logger.LogInformation("Created!");
 
@@ -98,7 +98,7 @@ namespace ResidualKnowledgeApp.Server.Services
 			_logger.LogInformation($"Getting sheet link for project with id {projectId}...");
 			var link = await _projectsRepository.GetSheetLink(projectId);
 
-			if (link == null)
+			if (String.IsNullOrEmpty(link))
 			{
 				link = await GenerateLink(projectId);
 			}
@@ -114,18 +114,18 @@ namespace ResidualKnowledgeApp.Server.Services
 		/// <returns></returns>
 		private async Task<string> GenerateLink(int projectId)
 		{
-			string link = null;
+			string link = String.Empty;
 			
 			try
 			{
-				string filesPath = AppDomain.CurrentDomain.BaseDirectory + $"../../../ServerFiles/"; // redo with projectID
-				// Path.Combine(_environment.ContentRootPath, "Files", $"Project_{projectId}_Files");
-				// структура? перименование файлов/вписать в инструкцию? очистка ненужных?
+				int adminId = 0;
+				string filesPath = Path.Combine(_environment.ContentRootPath, $"ServerFiles/User_{adminId}/Project_{projectId}"); // redo with projectID
+
+				// TODO: вписать в инструкцию правильное наименование файлов
 
 				var curriculum = new DocxCurriculum(filesPath + "curriculum.docx");
-				// файл берется с сервера - нужна структура файлов/путь из бд
-				var contingent = new Contingent(filesPath + "contingent.xlsx");  // файл загружается с сервера
-																	// через отдельный контроллер, нужна структура файлов
+				var contingent = new Contingent(filesPath + "contingent.xlsx");  // файл загружается с сервера через отдельный контроллер и форму
+																			   
 				var groups = contingent
 					.Where(s => s.CurriculumCode == curriculum.CurriculumCode.Replace("/", "\\"))
 					.Select(s => s.GroupInContingent)
@@ -175,13 +175,10 @@ namespace ResidualKnowledgeApp.Server.Services
 
 				link = "https://docs.google.com/spreadsheets/d/" + ConsoleApp.Generator.Generate(curriculum, contingent, consoleAppDisciplines);
 				await _projectsRepository.UpdateSheetLink(projectId, link);
-
-				// обновление ссылки
-
 			}
 			catch
 			{
-				link = null;
+				link = String.Empty;
 			}
 
 			return link;

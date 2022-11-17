@@ -14,7 +14,7 @@ namespace ResidualKnowledgeApp.Shared
 
 		public string RightAnswersEmail { get; set; }
 
-		public int ProjectId { get; set; }
+		// public int ProjectId { get; set; }
 
 		// public UserRole Role { get; set; } = Role.User; // TODO
 	}
