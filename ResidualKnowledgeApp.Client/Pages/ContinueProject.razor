@@ -2,12 +2,13 @@
 @inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
 @using ResidualKnowledgeApp.Client.Pages.FileUploadingComponents
 @using ResidualKnowledgeApp.Shared.DTO;
+@inject NavigationManager NavigationManager
 
-@if (!render)
+@if (!ProjectsService.IsAuthorized)
 {
-	<span>Проект загружается...</span>
+	NavigationManager.NavigateTo("index");
 }
-else
+else if (render)
 {
 	<MudElement Style="font-size: xx-large">@ProjectsService.Project.Name</MudElement>
 	<br />
@@ -34,7 +35,11 @@ else
 	@* center allign *@
 	@* слетела кодировка *@
 
-	
+
+}
+else
+{
+	<span>Проект загружается...</span>
 }
 
 	

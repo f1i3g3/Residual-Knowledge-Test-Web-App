@@ -1,5 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations
 @inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
+@inject NavigationManager NavigationManager
 
 <div style="max-width: 600px;">
     <EditForm Model="@userForm" OnValidSubmit="HandleSubmit">
@@ -11,7 +12,7 @@
             <br />
             <MudTextField Label="Отчество" @bind-Value="userForm.Patronymic" For="@(() => userForm.Patronymic)" />
             <br />
-            <MudTextField Label="Email, использованный в MS Forms (необходим для извлечения правильных ответов)" @bind-Value="userForm.RightAnswersEmail" />
+            <MudTextField Label="Email, использованный в MS Forms" @bind-Value="userForm.RightAnswersEmail" />
             <br />
             <MudButton Style="margin: 8px" ButtonType="ButtonType.Submit"
                        Variant="Variant.Filled"

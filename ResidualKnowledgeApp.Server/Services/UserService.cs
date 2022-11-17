@@ -13,6 +13,13 @@ namespace ResidualKnowledgeApp.Server.Services
 			_logger = logger;
 		}
 
+		public Task<bool> AuthorizeUser(int userId, int hash)
+		{
+			_logger.LogInformation("Authorize user");
+
+
+		}
+
 		public async Task<User> CreateUserAsync(User user)
 		{
 			_logger.LogInformation("Creating user");

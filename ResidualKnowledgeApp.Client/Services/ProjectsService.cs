@@ -1,4 +1,5 @@
-﻿using ResidualKnowledgeApp.Shared.DTO;
+﻿using Microsoft.AspNetCore.Components;
+using ResidualKnowledgeApp.Shared.DTO;
 using ResidualKnowledgeApp.Shared.ViewModels;
 using System.Net.Http.Json;
 
@@ -29,8 +30,10 @@ namespace ResidualKnowledgeApp.Client.Services
 		public HashSet<CompetenceWithDisciplineDTO> CompetencesForSelection { get; private set; } = new HashSet<CompetenceWithDisciplineDTO>();
 
 		public HashSet<CompetenceWithDisciplineDTO> SelectedCompetences { get; private set; } = new HashSet<CompetenceWithDisciplineDTO>();
+        public bool IsAuthorized { get; set; }
 
-		public event Action OnChange;
+        public event Action OnChange;
+
 
 		public async Task<ProjectDetailsDTO> CreateProject(CreateProjectVM project)
 		{

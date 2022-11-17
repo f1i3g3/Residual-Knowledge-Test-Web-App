@@ -14,7 +14,7 @@ namespace ResidualKnowledgeApp.Tests
 		}
 
 		[TestMethod]
-		public void Crypto()
+		public void CryptoTest()
 		{
 			using (var mySha = SHA256.Create())
 			{

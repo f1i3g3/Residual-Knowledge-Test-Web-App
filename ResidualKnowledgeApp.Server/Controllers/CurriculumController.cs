@@ -73,8 +73,8 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<IActionResult> GetAllCurriculumDisciplines(int id)
 		{
-			var exists = await _curriculumService.DoesCurriculumExist(id);
-			if (!exists)
+			var exists = await _curriculumService.DoesCurriculumExist(id);  // 0 numeration? - TODO
+            if (!exists)
 			{
 				return NotFound();
 			}
@@ -94,7 +94,6 @@ namespace ResidualKnowledgeApp.Server.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateCurriculum([FromBody] Curriculum curriculumViewModel)
 		{
-            _logger.LogInformation($"Start CurriculumController!");
             int adminId = 0;
 			var path = Path.Combine(_environment.ContentRootPath, "ServerFiles", $"User_{adminId}", $"Project_{curriculumViewModel.ProjectId}", curriculumViewModel.FileName);
 			_logger.LogInformation($"Creating curriculum from {path}");

@@ -1,10 +1,45 @@
-﻿@page "/authentication/{action}"
+﻿@page "/account/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.ComponentModel.DataAnnotations;
+@using System.Text.RegularExpressions;
+
+<!--
 <RemoteAuthenticatorView Action="@Action" />
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+	<DataAnnotationsValidator />
+	<MudGrid>
+		<MudItem xs="12" sm="7">
+			<MudCard>
+				<MudCardContent>
+					<MudTextField Label="First name" HelperText="Max. 8 characters"
+								  @bind-Value="model.Username" For="@(() => model.Username)" />
+					<MudTextField Label="Email" Class="mt-3"
+								  @bind-Value="model.Email" For="@(() => model.Email)" />
+					<MudTextField Label="Password" HelperText="Choose a strong password" Class="mt-3"
+								  @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password" />
+					<MudTextField Label="Password" HelperText="Repeat the password" Class="mt-3"
+								  @bind-Value="model.Password2" For="@(() => model.Password2)" InputType="InputType.Password" />
+				</MudCardContent>
+				<MudCardActions>
+					<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+				</MudCardActions>
+			</MudCard>
+		</MudItem>
+	</MudGrid>
+</EditForm>
+
+-->
 
 @code{
-    [Parameter] public string? Action { get; set; }
+	/*
 
-    // Некоторая формочка входа
-    // Надо как-то убрать менюшку
+	// Некоторая формочка входа
+	// Надо как-то убрать менюшку
+
+	
+	void OnValidSubmit()
+	{
+
+	}
+	*/
 }

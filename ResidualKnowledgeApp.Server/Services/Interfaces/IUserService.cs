@@ -11,7 +11,9 @@
 		Task<User> GetUserAsync(int userId);
 		
 		Task UpdateUserAsync(int userId, object update);
-		
-		// Task<User> GetProjectUserAsync(int projectId);
-	}
+
+        Task<bool> AuthorizeUser(int userId, int hash);
+
+        // Task<User> GetProjectUserAsync(int projectId);
+    }
 }

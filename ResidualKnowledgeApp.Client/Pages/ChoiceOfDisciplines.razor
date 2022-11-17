@@ -1,8 +1,14 @@
 ﻿@using ResidualKnowledgeApp.Shared.DTO;
 @inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
+@inject NavigationManager NavigationManager
 
+@if (!ProjectsService.IsAuthorized)
+{
+    NavigationManager.NavigateTo("index");
+}
 @if (!ProjectsService.UserChoice.CurriculumSelected)
 {
+    
 }
 else if (ProjectsService.UserChoice.DisciplinesSelected && !editing)
 {

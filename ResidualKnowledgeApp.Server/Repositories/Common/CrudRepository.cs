@@ -38,8 +38,6 @@ namespace ResidualKnowledgeApp.Server.Repositories.Common
 
 			Context.Set<TEntity>().Remove(item);
 			await Context.SaveChangesAsync();
-
-			Context.ChangeTracker.DetectChanges();
 		}
 
 		public async Task UpdateAsync(int id, object item)
@@ -51,8 +49,6 @@ namespace ResidualKnowledgeApp.Server.Repositories.Common
 			}
 			Context.Entry(entity).CurrentValues.SetValues(item);
 			await Context.SaveChangesAsync();
-
-			Context.ChangeTracker.DetectChanges();
 		}
 	}
 }

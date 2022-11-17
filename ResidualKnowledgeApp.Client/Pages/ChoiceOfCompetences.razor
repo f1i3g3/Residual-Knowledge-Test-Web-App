@@ -1,12 +1,18 @@
-﻿@using MudBlazor;
-@using ResidualKnowledgeApp.Shared.DTO;
-@inject ResidualKnowledgeApp.Client.Services.IProjectsService CheckingDisciplinesService
+﻿@using ResidualKnowledgeApp.Shared.DTO;
+@inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
+@inject NavigationManager NavigationManager
 
-@if (!CheckingDisciplinesService.UserChoice.DisciplinesSelected)
+@if (!ProjectsService.IsAuthorized)
 {
+    NavigationManager.NavigateTo("index");
 }
-else if (CheckingDisciplinesService.UserChoice.CompetencesShouldBeUpdated || editing || 
-    !CheckingDisciplinesService.UserChoice.CompetencesSelected) @**@
+else if (!ProjectsService.UserChoice.DisciplinesSelected)
+{
+
+}
+else if (ProjectsService.UserChoice.CompetencesShouldBeUpdated || editing ||
+    !ProjectsService.UserChoice.CompetencesSelected) 
+    @**@
 {
     <MudTable Items="CompetencesForSelection"
               MultiSelection="true"
@@ -103,7 +109,7 @@ else
 
     async Task SaveSelectedCompetences()
     {
-        await CheckingDisciplinesService.SetCheckingCompetences(SelectedCompetences);
+        await ProjectsService.SetCheckingCompetences(SelectedCompetences);
         editing = false;
     }
 
@@ -114,6 +120,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        CheckingDisciplinesService.OnChange += StateHasChanged;
+        ProjectsService.OnChange += StateHasChanged;
     }
 }

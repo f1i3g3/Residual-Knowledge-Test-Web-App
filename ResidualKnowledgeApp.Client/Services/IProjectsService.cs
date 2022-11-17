@@ -3,54 +3,56 @@ using ResidualKnowledgeApp.Shared.ViewModels;
 
 namespace ResidualKnowledgeApp.Client.Services
 {
-    public interface IProjectsService
-    {
-        event Action OnChange;
+	public interface IProjectsService
+	{
+		event Action OnChange;
+		bool IsAuthorized { get; set;  }
 
-        List<ProjectOverviewDTO> Projects { get; }
+		List<ProjectOverviewDTO> Projects { get; }
 
-        Task<List<ProjectOverviewDTO>> GetProjectsAsync();
+		Task<List<ProjectOverviewDTO>> GetProjectsAsync();
 
-        Task<List<ProjectOverviewDTO>> DeleteProject(int id);
+		Task<List<ProjectOverviewDTO>> DeleteProject(int id);
 
-        ///////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////
 
-        UserChoice UserChoice { get; }
+		UserChoice UserChoice { get; }
 
-        ProjectDetailsDTO Project { get; }
+		ProjectDetailsDTO Project { get; }
 
-        CurriculumDTO Curriculum { get; }
+		CurriculumDTO Curriculum { get; }
 
-        List<CheckingDisciplineDetailsDTO> CheckingDisciplines { get; }
+		List<CheckingDisciplineDetailsDTO> CheckingDisciplines { get; }
 
-        List<DisciplineDTO> DisciplinesForSelection { get; }
+		List<DisciplineDTO> DisciplinesForSelection { get; }
 
-        HashSet<CompetenceWithDisciplineDTO> CompetencesForSelection { get; }
+		HashSet<CompetenceWithDisciplineDTO> CompetencesForSelection { get; }
 
-        HashSet<CompetenceWithDisciplineDTO> SelectedCompetences { get; }
+		HashSet<CompetenceWithDisciplineDTO> SelectedCompetences { get; }
 
-        public string SheetLink { get; set; }
+		public string SheetLink { get; set; }
 
-        Task SaveMarkCriteria(int checkingDisciplineId, List<MarkCriterion> markCriteria);
+		Task SaveMarkCriteria(int checkingDisciplineId, List<MarkCriterion> markCriteria);
 
-        Task<ProjectDetailsDTO> CreateProject(CreateProjectVM project);
+		Task<ProjectDetailsDTO> CreateProject(CreateProjectVM project);
 
-        Task LoadProject(int projectId);
+		Task LoadProject(int projectId);
 
-        Task<List<ProjectOverviewDTO>> UpdateProject(Project project, int id);
+		Task<List<ProjectOverviewDTO>> UpdateProject(Project project, int id);
 
-        Task<CurriculumDTO> UploadCurriculumAsync(Curriculum curriculum, HttpContent content);
-        
-        Task SetCheckingDisciplines(IEnumerable<DisciplineDTO> selectedDisciplines);
+		Task<CurriculumDTO> UploadCurriculumAsync(Curriculum curriculum, HttpContent content);
+		
+		Task SetCheckingDisciplines(IEnumerable<DisciplineDTO> selectedDisciplines);
 
-        Task SetCheckingCompetences(IEnumerable<CompetenceWithDisciplineDTO> selectedCompetences);
+		Task SetCheckingCompetences(IEnumerable<CompetenceWithDisciplineDTO> selectedCompetences);
 
-        Task UpdateCheckingDisciplineFiles(int id, CheckingDisciplineDetailsDTO updated);
+		Task UpdateCheckingDisciplineFiles(int id, CheckingDisciplineDetailsDTO updated);
 
-        Task UploadFileAsync(HttpContent content);
+		Task UploadFileAsync(HttpContent content);
 
-        Task GetCheckingDisciplines();
+		Task GetCheckingDisciplines();
 
-        Task GetSheetLink(int projectId);
-    }
+		Task GetSheetLink(int projectId);
+		void ToIndex();
+	}
 }

@@ -3,49 +3,56 @@
 @inject NavigationManager NavigationManager
 @using System.ComponentModel.DataAnnotations
 
-<div style="max-width: 600px;">
-    <EditForm Model="@project" OnValidSubmit="HandleSubmit">
-        <DataAnnotationsValidator />
-        <MudCard>
-            <MudCardHeader>
-                <CardHeaderContent>
-                    <MudText Typo="Typo.h6">Создать проект</MudText>
-                </CardHeaderContent>
-            </MudCardHeader>
-            <MudCardContent>
-                <MudTextField Label="Название проекта" @bind-Value="project.Name" For="@(() => project.Name)" />
-                <br />
-                <InputFile id="fileInput" OnChange="UploadFile" hidden multiple />
-                <MudElement Class="d-flex">
-                    <div class="flex-grow-1">
-                        <MudTextField ReadOnly="true"
+@if (ProjectsService.IsAuthorized)
+{
+    <div style="max-width: 600px;">
+        <EditForm Model="@project" OnValidSubmit="HandleSubmit">
+            <DataAnnotationsValidator />
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Создать проект</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudTextField Label="Название проекта" @bind-Value="project.Name" For="@(() => project.Name)" />
+                    <br />
+                    <InputFile id="fileInput" OnChange="UploadFile" hidden multiple />
+                    <MudElement Class="d-flex">
+                        <div class="flex-grow-1">
+                            <MudTextField ReadOnly="true"
                                       Label="Учебный план"
                                       @bind-Value="project.CurriculumFileName"
                                       For="@(() => project.CurriculumFileName)" />  
-                    </div>
-                    <MudItem Class="flex-grow-0 ml-4 align-self-end">
-                        <MudButton HtmlTag="label"
+                        </div>
+                        <MudItem Class="flex-grow-0 ml-4 align-self-end">
+                            <MudButton HtmlTag="label"
                                    Variant="Variant.Filled"
                                    Color="Color.Primary"
                                    StartIcon="@Icons.Filled.UploadFile"
                                    for="fileInput"
                                    Class="d-inline-flex">
-                            Выбрать
-                        </MudButton>
-                    </MudItem>
-                </MudElement>
-            </MudCardContent>
-            <MudCardActions>
-                <MudButton Style="margin: 8px" ButtonType="ButtonType.Submit"
+                                Выбрать
+                            </MudButton>
+                        </MudItem>
+                    </MudElement>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Style="margin: 8px" ButtonType="ButtonType.Submit"
                            Variant="Variant.Filled"
                            Color="Color.Primary"
                            Class="ml-auto"
                            StartIcon="@Icons.Filled.CreateNewFolder"
                            Disabled="@disableSubmit">Создать</MudButton>
-            </MudCardActions>
-        </MudCard>
-    </EditForm>
-</div>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    </div>
+}
+else
+{
+    NavigationManager.NavigateTo("index");
+}
 
 @code
 {

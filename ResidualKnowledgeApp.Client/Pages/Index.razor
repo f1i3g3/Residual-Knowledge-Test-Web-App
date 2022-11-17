@@ -1,10 +1,17 @@
 ﻿@page "/"
+@inject ResidualKnowledgeApp.Client.Services.IProjectsService ProjectsService
 
-<MudText Typo="Typo.h4">Программа для проверки остаточных знаний студентов</MudText>
-<br />
-
-<MudText Typo="Typo.body1">
-	Это приложение предназначено для проверки остаточных знаний студентов.
-	<br />В данный момент продукт находится в ранней стадии разработки.
-</MudText>
-<br />
+@if (!ProjectsService.IsAuthorized)
+{
+	
+}
+else
+{
+	<MudText Typo="Typo.h4">Программа для проверки остаточных знаний студентов</MudText>
+	<br />
+	<!--  Если не автормзован - перенаправляет на логин -->
+	<MudText Typo="Typo.body1">
+		Это приложение предназначено для проверки остаточных знаний студентов.
+	</MudText>
+	<br />
+}
